@@ -7,7 +7,7 @@ class LikeRepositoryPostgres extends LikeRepository {
     this._idGenerator = idGenerator;
   }
 
-  async checkLike(payload) {
+  async verifyLikeComment(payload) {
     const {owner, commentId} = payload;
 
     const query = {
@@ -54,8 +54,8 @@ class LikeRepositoryPostgres extends LikeRepository {
       values: [commentId],
     };
 
-    const result = await this._pool.query(query);
-    return result.rows;
+    const {rows} = await this._pool.query(query);
+    return rows;
   }
 }
 
