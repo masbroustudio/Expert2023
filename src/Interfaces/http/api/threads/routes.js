@@ -34,6 +34,11 @@ const routes = (handler) => ([
     path: '/threads/{threadId}/comments/{commentId}/replies/{replyId}',
     handler: handler.deleteReplyHandler,
   },
+  {
+    method: 'PUT',
+    path: '/threads/{threadId}/comments/{commentId}/likes',
+    handler: handler.putLikeCommentHandler,
+  },
 ]);
 
 module.exports = routes;

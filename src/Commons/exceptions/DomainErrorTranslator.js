@@ -27,6 +27,7 @@ DomainErrorTranslator._directories = {
   'DELETE_COMMENT.NOT_MEET_AUTHENTICATION_DATA': new AuthenticationError('Missing authentication'),
   'DELETE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER': new AuthenticationError('Missing authentication'),
   'DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menghapus komentar karena properti yang dibutuhkan tidak ada'),
+  'LIKE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER': new AuthenticationError('Missing authentication'),
   'ADD_REPLY.NOT_MEET_AUTHENTICATION_DATA': new AuthenticationError('Missing authentication'),
   'ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak ada'),
   'ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat balasan baru karena tipe data tidak sesuai'),

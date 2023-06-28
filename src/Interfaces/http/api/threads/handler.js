@@ -4,6 +4,7 @@ const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentU
 const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
 const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
 const GetThreadUseCase = require('../../../../Applications/use_case/GetThreadUseCase');
+const LikeCommentUseCase = require('../../../../Applications/use_case/LikeCommentUseCase');
 const AuthenticationTokenManager = require('../../../../Applications/security/AuthenticationTokenManager');
 
 class ThreadsHandler {
@@ -16,6 +17,7 @@ class ThreadsHandler {
     this.deleteReplyHandler = this.deleteReplyHandler.bind(this);
     this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
     this.getThreadHandler = this.getThreadHandler.bind(this);
+    this.putLikeCommentHandler = this.putLikeCommentHandler.bind(this);
   }
 
   async postThreadHandler(request, h) {
@@ -135,7 +137,7 @@ class ThreadsHandler {
   }
 
   async deleteCommentHandler(request, h) {
-    const deleteForumThreadCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
+    const deleteThreadCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
     const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
 
     // Handling payload just undefined
@@ -153,7 +155,7 @@ class ThreadsHandler {
     request.payload.threadId = threadId;
     request.payload.commentId = commentId;
 
-    await deleteForumThreadCommentUseCase.execute(request.payload);
+    await deleteThreadCommentUseCase.execute(request.payload);
 
     const response = h.response({
       status: 'success',
@@ -171,6 +173,35 @@ class ThreadsHandler {
     const response = h.response({
       status: 'success',
       data: {thread},
+    });
+    response.code(200);
+    return response;
+  }
+
+  async putLikeCommentHandler(request, h) {
+    const likeCommentUseCase = this._container.getInstance(LikeCommentUseCase.name);
+    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+
+    // Handling payload just undefined
+    request.payload = request.payload ?? {};
+
+    // Handling authHeader
+    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    if (authHeader) {
+      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      request.payload.owner = id;
+    }
+
+    const threadId = (request.params && request.params.threadId);
+    const commentId = (request.params && request.params.commentId);
+
+    request.payload.threadId = threadId;
+    request.payload.commentId = commentId;
+
+    await likeCommentUseCase.execute(request.payload);
+
+    const response = h.response({
+      status: 'success',
     });
     response.code(200);
     return response;
