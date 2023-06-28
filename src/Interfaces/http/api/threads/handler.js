@@ -175,6 +175,9 @@ class ThreadsHandler {
     response.code(200);
     return response;
   }
+
+  async putLikeCommentHandler(request, h) {
+  }
 }
 
 module.exports = ThreadsHandler;
