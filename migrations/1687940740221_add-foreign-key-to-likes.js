@@ -8,8 +8,16 @@ exports.up = (pgm) => {
       onDelete: 'CASCADE',
     },
   });
+  pgm.addConstraint('likes', 'fk_likes.owner.id', {
+    foreignKeys: {
+      columns: 'owner',
+      references: 'users(id)',
+      onDelete: 'CASCADE',
+    },
+  });
 };
 
 exports.down = (pgm) => {
   pgm.dropConstraint('likes', 'fk_likes.comment_id.id');
+  pgm.dropConstraint('likes', 'fk_likes.owner.id');
 };
