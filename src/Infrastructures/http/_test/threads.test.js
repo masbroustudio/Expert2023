@@ -69,6 +69,15 @@ describe('/threads endpoint', () => {
     const commentResponseJson = JSON.parse(commentResponse.payload);
     commentId = commentResponseJson.data.addedComment.id;
 
+    // Add like
+    await server.inject({
+      method: 'PUT',
+      url: `/threads/${threadId}/comments/${commentId}/likes`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
     // Add reply
     const replyResponse = await server.inject({
       method: 'POST',
@@ -206,6 +215,7 @@ describe('/threads endpoint', () => {
             content: 'sebuah comment',
             date: responseJson.data.thread.comments[0].date,
             id: commentId,
+            likeCount: 1,
             replies: [
               {
                 content: 'sebuah reply',

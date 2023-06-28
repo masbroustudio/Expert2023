@@ -2,6 +2,7 @@ const GetThreadUseCase = require('../GetThreadUseCase');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const LikeRepository = require('../../../Domains/likes/LikeRepository');
 
 describe('GetThreadUseCase', () => {
   it('should orchestrating the get thread action correctly', async () => {
@@ -14,6 +15,7 @@ describe('GetThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     /** mocking needed function */
     mockThreadRepository.getThreadById = jest.fn()
@@ -47,11 +49,14 @@ describe('GetThreadUseCase', () => {
           username: 'dicoding',
         }]));
 
+    mockLikeRepository.getLikeCount = jest.fn(() => Promise.resolve(1));
+
     /** creating use case instance */
     const getThreadUseCase = new GetThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      likeRepository: mockLikeRepository,
     });
 
     // Action
@@ -75,6 +80,7 @@ describe('GetThreadUseCase', () => {
         username: 'dicoding',
         date: '2021-08-08T07:22:33.555Z',
         content: 'Comment from earth',
+        likeCount: 1,
         replies: [{
           id: 'reply-123',
           content: 'Reply from Mars',
@@ -95,6 +101,7 @@ describe('GetThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     /** mocking needed function */
     mockThreadRepository.getThreadById = jest.fn()
@@ -125,12 +132,14 @@ describe('GetThreadUseCase', () => {
           is_delete: true,
           username: 'dicoding',
         }]));
+    mockLikeRepository.getLikeCount = jest.fn(() => Promise.resolve(1));
 
     /** creating use case instance */
     const getThreadUseCase = new GetThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      likeRepository: mockLikeRepository,
     });
 
     // Action
@@ -154,6 +163,7 @@ describe('GetThreadUseCase', () => {
         username: 'dicoding',
         date: '2021-08-08T07:22:33.555Z',
         content: '**komentar telah dihapus**',
+        likeCount: 1,
         replies: [{
           id: 'reply-123',
           content: '**balasan telah dihapus**',

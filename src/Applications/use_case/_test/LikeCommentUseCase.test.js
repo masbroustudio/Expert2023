@@ -94,7 +94,7 @@ describe('LikeCommentUseCase', () => {
     /** mock needed function */
     mockThreadRepository.verifyAvailableThread = jest.fn(() => Promise.resolve());
     mockCommentRepository.verifyAvailableComment = jest.fn(() => Promise.resolve());
-    mockLikeRepository.verifyLikeComment = jest.fn(() => Promise.resolve(false));
+    mockLikeRepository.checkLike = jest.fn(() => Promise.resolve(false));
     mockLikeRepository.addLike = jest.fn(() => Promise.resolve());
 
     /** creating use case instance */
@@ -112,7 +112,7 @@ describe('LikeCommentUseCase', () => {
         .toHaveBeenCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.verifyAvailableComment)
         .toHaveBeenCalledWith(useCasePayload.commentId);
-    expect(mockLikeRepository.verifyLikeComment)
+    expect(mockLikeRepository.checkLike)
         .toHaveBeenCalledWith(useCasePayload);
     expect(mockLikeRepository.addLike)
         .toHaveBeenCalledWith(useCasePayload);
@@ -134,7 +134,7 @@ describe('LikeCommentUseCase', () => {
     /** mock needed function */
     mockThreadRepository.verifyAvailableThread = jest.fn(() => Promise.resolve());
     mockCommentRepository.verifyAvailableComment = jest.fn(() => Promise.resolve());
-    mockLikeRepository.verifyLikeComment = jest.fn(() => Promise.resolve(true));
+    mockLikeRepository.checkLike = jest.fn(() => Promise.resolve(true));
     mockLikeRepository.deleteLike = jest.fn(() => Promise.resolve());
 
     /** creating use case instance */
@@ -152,7 +152,7 @@ describe('LikeCommentUseCase', () => {
         .toHaveBeenCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.verifyAvailableComment)
         .toHaveBeenCalledWith(useCasePayload.commentId);
-    expect(mockLikeRepository.verifyLikeComment)
+    expect(mockLikeRepository.checkLike)
         .toHaveBeenCalledWith(useCasePayload);
     expect(mockLikeRepository.deleteLike)
         .toHaveBeenCalledWith(useCasePayload);
