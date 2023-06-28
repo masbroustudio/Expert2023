@@ -1,6 +1,20 @@
 const createServer = require('../createServer');
 
 describe('HTTP server', () => {
+  it('should response 200 when request root path', async () => {
+    // Arrange
+    const server = await createServer({});
+
+    // Action
+    const response = await server.inject({
+      method: 'GET',
+      url: '/',
+    });
+
+    // Assert
+    expect(response.statusCode).toEqual(200);
+  });
+
   it('should response 404 when request unregistered route', async () => {
     // Arrange
     const server = await createServer({});
