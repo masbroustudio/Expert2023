@@ -25,6 +25,36 @@ describe('LikeRepositoryPostgres', () => {
     await pool.end();
   });
 
+  describe('checkLike function', () => {
+    it('should return false if like not exist', async () => {
+      // Arrange
+      const fakeIdGenerator = () => '123';
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      const like = await likeRepositoryPostgres.checkLike('comment-123', 'user-456');
+      expect(like).toStrictEqual(false);
+    });
+
+    it('should return true if like exist', async () => {
+      // Arrange
+      const addLike = {
+        commentId: 'comment-123',
+        owner: 'user-123',
+      };
+
+      const fakeIdGenerator = () => '123';
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      await likeRepositoryPostgres.addLike(addLike);
+
+      // Assert
+      const like = await likeRepositoryPostgres.checkLike({commentId: 'comment-123', owner: 'user-123'});
+      expect(like).toStrictEqual(true);
+    });
+  });
+
   describe('addLike function', () => {
     it('should persist added like', async () => {
       // Arrange
