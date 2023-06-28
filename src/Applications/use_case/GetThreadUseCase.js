@@ -1,8 +1,9 @@
 class GetThreadUseCase {
-  constructor({threadRepository, commentRepository, replyRepository}) {
+  constructor({threadRepository, commentRepository, replyRepository, likeRepository}) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async execute(threadId) {
@@ -18,6 +19,7 @@ class GetThreadUseCase {
           username: comment.username,
           date: comment.date,
           content: comment.is_delete ? '**komentar telah dihapus**' : comment.content,
+          likeCount: await this._likeRepository.getLikeCount(comment.id),
         };
 
 

@@ -52,6 +52,8 @@ describe('DomainErrorTranslator', () => {
         .toStrictEqual(new AuthenticationError('Missing authentication'));
     expect(DomainErrorTranslator.translate(new Error('DELETE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY')))
         .toStrictEqual(new InvariantError('tidak dapat menghapus balasan karena properti yang dibutuhkan tidak ada'));
+    expect(DomainErrorTranslator.translate(new Error('LIKE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER')))
+        .toStrictEqual(new AuthenticationError('Missing authentication'));
   });
 
   it('should return original error when error message is not needed to translate', () => {

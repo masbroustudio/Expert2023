@@ -10,7 +10,7 @@ class LikeCommentUseCase {
 
     await this._threadRepository.verifyAvailableThread(useCasePayload.threadId);
     await this._commentRepository.verifyAvailableComment(useCasePayload.commentId);
-    const likeState = await this._likeRepository.verifyLikeComment(useCasePayload);
+    const likeState = await this._likeRepository.checkLike(useCasePayload);
 
     if (likeState) {
       await this._likeRepository.deleteLike(useCasePayload);
