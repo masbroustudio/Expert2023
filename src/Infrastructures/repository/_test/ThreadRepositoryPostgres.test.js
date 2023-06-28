@@ -7,7 +7,7 @@ const pool = require('../../database/postgres/pool');
 
 describe('ThreadRepositoryPostgres', () => {
   beforeEach(async () => {
-    UsersTableTestHelper.addUser({id: 'user-123', username: 'dicoding'});
+    await UsersTableTestHelper.addUser({id: 'user-123', username: 'dicoding'});
   });
 
   afterEach(async () => {
