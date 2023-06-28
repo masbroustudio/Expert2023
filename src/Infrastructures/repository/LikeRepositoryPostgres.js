@@ -7,7 +7,7 @@ class LikeRepositoryPostgres extends LikeRepository {
     this._idGenerator = idGenerator;
   }
 
-  async verifyLikeComment(payload) {
+  async checkLike(payload) {
     const {owner, commentId} = payload;
 
     const query = {
@@ -29,7 +29,7 @@ class LikeRepositoryPostgres extends LikeRepository {
 
     const query = {
       text: 'INSERT INTO likes VALUES($1, $2, $3) RETURNING id',
-      values: [id, owner, commentId],
+      values: [id, commentId, owner],
     };
 
     await this._pool.query(query);
@@ -46,16 +46,14 @@ class LikeRepositoryPostgres extends LikeRepository {
     await this._pool.query(query);
   }
 
-  async getLikeCount(payload) {
-    const {commentId} = payload;
-
+  async getLikeCount(commentId) {
     const query = {
       text: 'SELECT id FROM likes WHERE comment_id = $1',
       values: [commentId],
     };
 
-    const {rows} = await this._pool.query(query);
-    return rows;
+    const result = await this._pool.query(query);
+    return result.rowCount;
   }
 }
 

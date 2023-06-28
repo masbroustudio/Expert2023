@@ -2,7 +2,7 @@
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const LikesTableTestHelper = {
-  async verifyLikeId({
+  async checkLike({
     owner = 'user-123',
     commentId = 'comment-123',
   }) {
