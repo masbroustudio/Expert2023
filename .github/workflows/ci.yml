@@ -41,7 +41,7 @@ jobs:
           npm run test
         env:
           CI: true
-          PGHOST_TEST: localhostc
+          PGHOST_TEST: localhost
           PGUSER_TEST: postgres
           PGDATABASE_TEST: forumapi_test
           PGPASSWORD_TEST: pgpassword
