@@ -1,0 +1,21 @@
+{
+  "name": "jest-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll --coverage",
+    "start": "node src/07_automation_hapi/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.3",
+    "eslint": "^8.47.0",
+    "jest": "^29.6.2"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2"
+  }
+}
