@@ -48,3 +48,93 @@ auth-api/                   → Root Proyek.
 ├─ tests/                   → Utilitas kebutuhan untuk testing.
 ├─ .env                     → Environment variable.
 ├─ package.json             → Project Manifest.
+
+
+
+npm init -y
+npm install @hapi/hapi @hapi/jwt bcrypt dotenv nanoid@3.x.x pg
+npm install @types/jest eslint jest node-pg-migrate nodemon --save-dev
+npx eslint --init
+
+"scripts": {
+    "start": "node src/app.js",
+    "start:dev": "nodemon src/app.js",
+    "test": "jest --setupFiles dotenv/config",
+    "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config",
+    "migrate": "node-pg-migrate",
+    "migrate:test": "node-pg-migrate -f config/database/test.json"
+  },
+
+\Applications
+\Commons
+\Domains
+\Infrastructures
+\Interfaces
+\app.js
+
+psql --username postgres
+Ac.22
+CREATE DATABASE authapi; CREATE DATABASE authapi_test;
+GRANT ALL PRIVILEGES ON DATABASE authapi, authapi_test TO developer;
+ALTER DATABASE authapi OWNER TO developer; ALTER DATABASE authapi_test OWNER TO developer;
+
+.env
+# POSTGRES
+PGHOST=localhost
+PGUSER=developer
+PGDATABASE=authapi
+PGPASSWORD=supersecretpassword
+PGPORT=5432
+ 
+# POSTGRES TEST
+PGHOST_TEST=localhost
+PGUSER_TEST=developer
+PGDATABASE_TEST=authapi_test
+PGPASSWORD_TEST=supersecretpassword
+PGPORT_TEST=5432
+
+
+config/database/test.json
+
+npm run migrate create "create table users"
+npm run migrate create "create table authentications"
+npm run migrate up
+
+npm run migrate:test up
+
+Infrastructures/database/postgres/pool.js
+
+tests/
+-- UsersTableTestHelper.js
+-- AuthenticationsTableTestHelper.js
+Anda tidak perlu khawatir bila kode tidak dituliskan dengan TDD, karena memang kode tersebut tidak perlu diuji.
+
+#  PEMBUATAN CUSTOM ERROR
+Commons/exceptions
+-- ClientError.js
+-- InvariantError.js
+-- AuthenticationError.js
+-- NotFoundError.js
+...
+Commons/exceptions/_test
+-- ClientError.test.js
+-- InvariantError.test.js
+-- AuthenticationError.test.js
+-- NotFoundError.test.js
+...
+
+npm run test:watch
+
+Next.. Domain, Applications, Infrastructure, Interfaces, 
+
+npm install instances-container
+
+.env add :
+# HTTP SERVER
+HOST=localhost
+PORT=5000
+
+app.js
+npm run start:dev
+
+
