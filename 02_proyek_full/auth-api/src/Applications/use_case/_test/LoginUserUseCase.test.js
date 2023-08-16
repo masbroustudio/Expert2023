@@ -12,7 +12,7 @@ describe('GetAuthenticationUseCase', () => {
       username: 'dicoding',
       password: 'secret',
     };
-    const expectedAuthentication = new NewAuth({
+    const mockedAuthentication = new NewAuth({
       accessToken: 'access_token',
       refreshToken: 'refresh_token',
     });
@@ -24,12 +24,14 @@ describe('GetAuthenticationUseCase', () => {
     // Mocking
     mockUserRepository.getPasswordByUsername = jest.fn()
       .mockImplementation(() => Promise.resolve('encrypted_password'));
-    mockPasswordHash.compare = jest.fn()
+    mockPasswordHash.comparePassword = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockAuthenticationTokenManager.createAccessToken = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedAuthentication.accessToken));
+      .mockImplementation(() => Promise.resolve(mockedAuthentication.accessToken));
     mockAuthenticationTokenManager.createRefreshToken = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedAuthentication.refreshToken));
+      .mockImplementation(() => Promise.resolve(mockedAuthentication.refreshToken));
+    mockUserRepository.getIdByUsername = jest.fn()
+      .mockImplementation(() => Promise.resolve('user-123'));
     mockAuthenticationRepository.addToken = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
@@ -45,16 +47,21 @@ describe('GetAuthenticationUseCase', () => {
     const actualAuthentication = await loginUserUseCase.execute(useCasePayload);
 
     // Assert
-    expect(actualAuthentication).toEqual(expectedAuthentication);
+    expect(actualAuthentication).toEqual(new NewAuth({
+      accessToken: 'access_token',
+      refreshToken: 'refresh_token',
+    }));
     expect(mockUserRepository.getPasswordByUsername)
       .toBeCalledWith('dicoding');
-    expect(mockPasswordHash.compare)
+    expect(mockPasswordHash.comparePassword)
       .toBeCalledWith('secret', 'encrypted_password');
+    expect(mockUserRepository.getIdByUsername)
+      .toBeCalledWith('dicoding');
     expect(mockAuthenticationTokenManager.createAccessToken)
-      .toBeCalledWith({ username: 'dicoding' });
+      .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
     expect(mockAuthenticationTokenManager.createRefreshToken)
-      .toBeCalledWith({ username: 'dicoding' });
+      .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
     expect(mockAuthenticationRepository.addToken)
-      .toBeCalledWith(expectedAuthentication.refreshToken);
+      .toBeCalledWith(mockedAuthentication.refreshToken);
   });
 });

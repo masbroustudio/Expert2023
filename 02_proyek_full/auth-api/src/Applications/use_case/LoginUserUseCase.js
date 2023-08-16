@@ -19,10 +19,14 @@ class LoginUserUseCase {
 
     const encryptedPassword = await this._userRepository.getPasswordByUsername(username);
 
-    await this._passwordHash.compare(password, encryptedPassword);
+    await this._passwordHash.comparePassword(password, encryptedPassword);
 
-    const accessToken = await this._authenticationTokenManager.createAccessToken({ username });
-    const refreshToken = await this._authenticationTokenManager.createRefreshToken({ username });
+    const id = await this._userRepository.getIdByUsername(username);
+
+    const accessToken = await this._authenticationTokenManager
+      .createAccessToken({ username, id });
+    const refreshToken = await this._authenticationTokenManager
+      .createRefreshToken({ username, id });
 
     const newAuthentication = new NewAuthentication({
       accessToken,
