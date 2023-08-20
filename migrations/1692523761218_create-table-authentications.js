@@ -1,7 +1,14 @@
 /* eslint-disable camelcase */
 
-exports.shorthands = undefined;
+exports.up = (pgm) => {
+  pgm.createTable("authentications", {
+    token: {
+      type: "TEXT",
+      notNull: true,
+    },
+  });
+};
 
-exports.up = pgm => {};
-
-exports.down = pgm => {};
+exports.down = (pgm) => {
+  pgm.dropTable("authentications");
+};
