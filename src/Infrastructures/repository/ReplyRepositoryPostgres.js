@@ -6,6 +6,7 @@ const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator, timestampGenerator) {
     super();
+
     this._pool = pool;
     this._idGenerator = idGenerator;
     this._timestampGenerator = timestampGenerator;
@@ -22,6 +23,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     };
 
     const result = await this._pool.query(query);
+
     return new AddedReply({ ...result.rows[0] });
   }
 
@@ -34,22 +36,29 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     };
 
     const { rows } = await this._pool.query(query);
+
     if (!rows.length) throw new NotFoundError("reply tidak ditemukan");
+
     if (rows[0].owner !== owner) {
-      throw new AuthorizationError("Tidak dapat akses, anda bukan pemilik reply");
+      throw new AuthorizationError(
+        "Tidak dapat akses, anda bukan pemilik reply"
+      );
     }
   }
 
   async getReplyByCommentId(commentId) {
     const query = {
-      text: `SELECT replies.*, users.username FROM replies
+      text: `
+              SELECT replies.*, users.username FROM replies
               LEFT JOIN users ON replies.owner = users.id
               WHERE replies.comment_id = $1
-              ORDER BY replies.date ASC`,
+              ORDER BY replies.date ASC
+              `,
       values: [commentId],
     };
 
     const { rows } = await this._pool.query(query);
+    
     return rows;
   }
 

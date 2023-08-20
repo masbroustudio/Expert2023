@@ -14,7 +14,7 @@ describe("/threads endpoint", () => {
   beforeEach(async () => {
     const server = await createServer(container);
 
-    // Add user
+    // ..Post Add User
     await server.inject({
       method: "POST",
       url: "/users",
@@ -25,7 +25,7 @@ describe("/threads endpoint", () => {
       },
     });
 
-    // Login user
+    // ..Post Login
     const loginResponse = await server.inject({
       method: "POST",
       url: "/authentications",
@@ -38,7 +38,6 @@ describe("/threads endpoint", () => {
     const loginResponseJson = JSON.parse(loginResponse.payload);
     accessToken = loginResponseJson.data.accessToken;
 
-    // Add thread
     const threadResponse = await server.inject({
       method: "POST",
       url: "/threads",
@@ -54,7 +53,7 @@ describe("/threads endpoint", () => {
     const threadResponseJson = JSON.parse(threadResponse.payload);
     threadId = threadResponseJson.data.addedThread.id;
 
-    // Add comment
+    // ..Post Add Comment
     const commentResponse = await server.inject({
       method: "POST",
       url: `/threads/${threadId}/comments`,
@@ -69,7 +68,7 @@ describe("/threads endpoint", () => {
     const commentResponseJson = JSON.parse(commentResponse.payload);
     commentId = commentResponseJson.data.addedComment.id;
 
-    // Add like
+    //  ..Post Add Likes
     await server.inject({
       method: "PUT",
       url: `/threads/${threadId}/comments/${commentId}/likes`,
@@ -78,7 +77,7 @@ describe("/threads endpoint", () => {
       },
     });
 
-    // Add reply
+    //  ..Post Add Reply
     const replyResponse = await server.inject({
       method: "POST",
       url: `/threads/${threadId}/comments/${commentId}/replies`,

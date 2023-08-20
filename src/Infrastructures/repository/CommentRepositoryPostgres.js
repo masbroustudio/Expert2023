@@ -6,6 +6,7 @@ const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator, timestampGenerator) {
     super();
+
     this._pool = pool;
     this._idGenerator = idGenerator;
     this._timestampGenerator = timestampGenerator;
@@ -13,6 +14,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async addComment(payload) {
     const { content, owner, threadId } = payload;
+
     const id = `comment-${this._idGenerator()}`;
     const date = this._timestampGenerator();
 
@@ -43,10 +45,12 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentByThreadId(threadId) {
     const query = {
-      text: `SELECT comments.*, users.username FROM comments
+      text: `
+            SELECT comments.*, users.username FROM comments
             LEFT JOIN users ON comments.owner = users.id
             WHERE comments.thread_id = $1
-            ORDER BY comments.date ASC`,
+            ORDER BY comments.date ASC
+            `,
       values: [threadId],
     };
 

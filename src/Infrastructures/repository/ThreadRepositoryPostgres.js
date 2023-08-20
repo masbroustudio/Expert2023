@@ -5,6 +5,7 @@ const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator, timestampGenerator) {
     super();
+
     this._pool = pool;
     this._idGenerator = idGenerator;
     this._timestampGenerator = timestampGenerator;
@@ -21,6 +22,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     };
 
     const result = await this._pool.query(query);
+
     return new AddedThread({ ...result.rows[0] });
   }
 
@@ -41,10 +43,12 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async getThreadById(threadId) {
     const query = {
-      text: `SELECT threads.id, threads.title, threads.body, threads.date, users.username
+      text: `
+              SELECT threads.id, threads.title, threads.body, threads.date, users.username
                 FROM threads
                 LEFT JOIN users ON threads.owner = users.id
-                WHERE threads.id = $1`,
+                WHERE threads.id = $1
+                `,
       values: [threadId],
     };
 

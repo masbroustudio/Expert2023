@@ -16,7 +16,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
   beforeEach(async () => {
     const server = await createServer(container);
 
-    // create user
+    // ..Post New User
     await server.inject({
       method: "POST",
       url: "/users",
@@ -37,7 +37,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       },
     });
 
-    // login user
+    //  ..Post Login Auth
     const loginResponse = await server.inject({
       method: "POST",
       url: "/authentications",
@@ -47,7 +47,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       },
     });
 
-    const anotherLoginResponse = await server.inject({
+    const setNewLoginResponse = await server.inject({
       method: "POST",
       url: "/authentications",
       payload: {
@@ -59,10 +59,10 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
     const loginResponseJson = JSON.parse(loginResponse.payload);
     accessToken = loginResponseJson.data.accessToken;
 
-    const anotherLoginResponseJson = JSON.parse(anotherLoginResponse.payload);
-    anotherAccessToken = anotherLoginResponseJson.data.accessToken;
+    const setNewLoginResponseJson = JSON.parse(setNewLoginResponse.payload);
+    anotherAccessToken = setNewLoginResponseJson.data.accessToken;
 
-    // create thread
+    // ..Post New Thread
     const threadResponse = await server.inject({
       method: "POST",
       url: "/threads",
@@ -76,7 +76,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
     const threadResponseJson = JSON.parse(threadResponse.payload);
     threadId = threadResponseJson.data.addedThread.id;
 
-    // create comment
+    // ..Post New Comment
     const commentResponse = await server.inject({
       method: "POST",
       url: `/threads/${threadId}/comments`,
@@ -87,7 +87,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
     const commentResponseJson = JSON.parse(commentResponse.payload);
     commentId = commentResponseJson.data.addedComment.id;
 
-    // create reply
+    // ..Post New Reply
     const replyResponse = await server.inject({
       method: "POST",
       url: `/threads/${threadId}/comments/${commentId}/replies`,

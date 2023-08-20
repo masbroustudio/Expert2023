@@ -17,7 +17,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
   beforeEach(async () => {
     const server = await createServer(container);
 
-    // create user
+    // ..Post New User
     await server.inject({
       method: "POST",
       url: "/users",
@@ -38,7 +38,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       },
     });
 
-    // login user
+    // ..Post Login
     const loginResponse = await server.inject({
       method: "POST",
       url: "/authentications",
@@ -48,7 +48,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       },
     });
 
-    const anotherLoginResponse = await server.inject({
+    const setNewLoginResponse = await server.inject({
       method: "POST",
       url: "/authentications",
       payload: {
@@ -60,10 +60,10 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
     const loginResponseJson = JSON.parse(loginResponse.payload);
     accessToken = loginResponseJson.data.accessToken;
 
-    const anotherLoginResponseJson = JSON.parse(anotherLoginResponse.payload);
-    anotherAccessToken = anotherLoginResponseJson.data.accessToken;
+    const setNewLoginResponseJson = JSON.parse(setNewLoginResponse.payload);
+    anotherAccessToken = setNewLoginResponseJson.data.accessToken;
 
-    // create thread
+    // ..Post New thread
     const createThreadResponse = await server.inject({
       method: "POST",
       url: "/threads",
@@ -79,7 +79,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
     const createThreadResponseJson = JSON.parse(createThreadResponse.payload);
     threadId = createThreadResponseJson.data.addedThread.id;
 
-    // create comment
+    // ..Post New Comment
     const createCommentResponse = await server.inject({
       method: "POST",
       url: `/threads/${threadId}/comments`,
@@ -136,6 +136,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+      
       expect(response.statusCode).toEqual(401);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("Missing authentication");
@@ -156,6 +157,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("thread tidak ditemukan");
@@ -176,6 +178,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("comment tidak valid atau tidak ditemukan");
@@ -196,6 +199,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
     });
@@ -215,6 +219,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
     });
@@ -234,6 +239,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
     });
@@ -253,6 +259,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
     });
@@ -278,6 +285,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
       expect(responseJson.data.thread.comments[0].likeCount).toEqual(1);
@@ -287,7 +295,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       // Arrange
       const server = await createServer(container);
 
-      // Add like
+      // ..Put Likes
       await server.inject({
         method: "PUT",
         url: `/threads/${threadId}/comments/${commentId}/likes`,
@@ -296,7 +304,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
         },
       });
 
-      // Unlike
+      // ..Put Unlike
       await server.inject({
         method: "PUT",
         url: `/threads/${threadId}/comments/${commentId}/likes`,
@@ -313,6 +321,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
       expect(responseJson.data.thread.comments[0].likeCount).toEqual(0);
