@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+
 const pool = require("../src/Infrastructures/database/postgres/pool");
 
 const RepliesTableTestHelper = {
@@ -10,7 +11,7 @@ const RepliesTableTestHelper = {
     comment_id = "comment-123",
   }) {
     const query = {
-      text: "INSERT INTO replies VALUES($1, $2, $3, $4, $5)",
+      text: "INSERT INTO replies (id, content, date, owner, comment_id) VALUES($1, $2, $3, $4, $5)",
       values: [id, content, date, owner, comment_id],
     };
 
@@ -23,22 +24,26 @@ const RepliesTableTestHelper = {
       values: [replyId],
     };
 
-    const { rows } = await this._pool.query(query);
-    if (!rows.length) throw new NotFoundError("comment tidak ditemukan");
-    if (rows[0].owner !== owner)
+    const { rows } = await pool.query(query);
+    if (!rows.length) {
+      throw new NotFoundError("comment tidak ditemukan");
+    } else if (rows[0].owner !== owner) {
       throw new AuthorizationError("Missing authentication");
+    }
   },
 
   async getReplyByCommentId(commentId = "comment-123") {
     const query = {
-      text: `SELECT replies.id,
+      text: `
+              SELECT replies.id,
               CASE WHEN replies.is_delete = true THEN '**balasan telah dihapus**' ELSE replies.content END AS content,
               replies.date,
               users.username
               FROM replies
               LEFT JOIN users ON replies.owner = users.id
               WHERE replies.comment_id = $1
-              ORDER BY replies.date ASC`,
+              ORDER BY replies.date ASC
+              `,
       values: [commentId],
     };
 

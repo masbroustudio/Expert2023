@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+
 const pool = require("../src/Infrastructures/database/postgres/pool");
 
 const LikesTableTestHelper = {
@@ -17,7 +18,7 @@ const LikesTableTestHelper = {
     owner = "user-123",
   }) {
     const query = {
-      text: "INSERT INTO likes VALUES($1, $2, $3)",
+      text: "INSERT INTO likes (id, commentId, owner) VALUES($1, $2, $3)",
       values: [id, commentId, owner],
     };
 

@@ -5,7 +5,7 @@ describe("a AddedComment entities", () => {
     // Arrange
     const payload = {
       id: "comment-123",
-      content: "Comment from mars",
+      content: "sebuah content",
     };
 
     // Action & Assert
@@ -18,7 +18,7 @@ describe("a AddedComment entities", () => {
     // Arrange
     const payload = {
       id: "comment-123",
-      content: "Comment from mars",
+      content: "sebuah content",
       owner: 123,
     };
 
@@ -32,7 +32,7 @@ describe("a AddedComment entities", () => {
     // Arrange
     const payload = {
       id: "comment-123",
-      content: "Comment from mars",
+      content: "sebuah content",
       owner: "user-123",
     };
 
