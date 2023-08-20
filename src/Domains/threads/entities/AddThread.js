@@ -2,23 +2,27 @@ class AddThread {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const {title, body, owner} = payload;
+    const { title, body, owner } = payload;
     this.title = title;
     this.body = body;
     this.owner = owner;
   }
 
-  _verifyPayload({title, body, owner}) {
+  _verifyPayload({ title, body, owner }) {
     if (!owner) {
-      throw new Error('ADD_THREAD.NOT_MEET_AUTHENTICATION_DATA');
+      throw new Error("ADD_THREAD.NOT_MEET_AUTHENTICATION_DATA");
     }
 
     if (!title || !body) {
-      throw new Error('ADD_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
+      throw new Error("ADD_THREAD.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
-    if (typeof title !== 'string' || typeof body !== 'string' || typeof owner !== 'string') {
-      throw new Error('ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    if (
+      typeof title !== "string" ||
+      typeof body !== "string" ||
+      typeof owner !== "string"
+    ) {
+      throw new Error("ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }
   }
 }

@@ -1,5 +1,5 @@
 class LikeCommentUseCase {
-  constructor({threadRepository, commentRepository, likeRepository}) {
+  constructor({ threadRepository, commentRepository, likeRepository }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._likeRepository = likeRepository;
@@ -9,7 +9,9 @@ class LikeCommentUseCase {
     this._validatePayload(useCasePayload);
 
     await this._threadRepository.verifyAvailableThread(useCasePayload.threadId);
-    await this._commentRepository.verifyAvailableComment(useCasePayload.commentId);
+    await this._commentRepository.verifyAvailableComment(
+      useCasePayload.commentId,
+    );
     const likeState = await this._likeRepository.checkLike(useCasePayload);
 
     if (likeState) {
@@ -20,17 +22,21 @@ class LikeCommentUseCase {
   }
 
   _validatePayload(payload) {
-    const {threadId, commentId, owner} = payload;
+    const { threadId, commentId, owner } = payload;
     if (!owner) {
-      throw new Error('LIKE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER');
+      throw new Error("LIKE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER");
     }
 
     if (!threadId || !commentId) {
-      throw new Error('LIKE_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY');
+      throw new Error("LIKE_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
-    if (typeof threadId !== 'string' || typeof commentId !== 'string' || typeof owner !== 'string') {
-      throw new Error('LIKE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    if (
+      typeof threadId !== "string" ||
+      typeof commentId !== "string" ||
+      typeof owner !== "string"
+    ) {
+      throw new Error("LIKE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }
   }
 }

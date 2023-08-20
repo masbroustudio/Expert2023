@@ -1,7 +1,6 @@
 {
-  "name": "forum-api",
+  "name": "forum-v2-satu",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
@@ -11,8 +10,7 @@
     "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config -i",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate -f config/database/test.json",
-    "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx",
-    "lint:fix": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx --fix"
+    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
   },
   "keywords": [],
   "author": "",
@@ -28,11 +26,16 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
-    "eslint": "^8.43.0",
-    "eslint-config-google": "^0.14.0",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
     "jest": "^27.0.6",
     "node-pg-migrate": "^5.10.0",
-    "nodemon": "^2.0.9"
-  }
+    "nodemon": "^2.0.9",
+    "prettier": "^3.0.2"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "description": ""
 }

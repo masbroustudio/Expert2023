@@ -1,16 +1,16 @@
 /* istanbul ignore file */
-const pool = require('../src/Infrastructures/database/postgres/pool');
+const pool = require("../src/Infrastructures/database/postgres/pool");
 
 const CommentsTableTestHelper = {
   async addComment({
-    id = 'comment-123',
-    content = 'Comment from mars',
+    id = "comment-123",
+    content = "Comment from mars",
     date = new Date(),
-    owner = 'user-123',
-    thread_id = 'thread-123',
+    owner = "user-123",
+    thread_id = "thread-123",
   }) {
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5)',
+      text: "INSERT INTO comments VALUES($1, $2, $3, $4, $5)",
       values: [id, content, date, owner, thread_id],
     };
 
@@ -19,7 +19,7 @@ const CommentsTableTestHelper = {
 
   async verifyAvailableComment(commentId) {
     const query = {
-      text: 'SELECT owner FROM comments WHERE id = $1',
+      text: "SELECT owner FROM comments WHERE id = $1",
       values: [commentId],
     };
 
@@ -37,30 +37,25 @@ const CommentsTableTestHelper = {
       values: [threadId],
     };
 
-    const {rows} = await pool.query(query);
+    const { rows } = await pool.query(query);
     return rows;
   },
 
-  async verifyCommentOwner({
-    commentId = `comment-123`,
-    owner = `user-123`,
-  }) {
+  async verifyCommentOwner({ commentId = `comment-123`, owner = `user-123` }) {
     const query = {
-      text: 'SELECT owner FROM comments WHERE id = $1',
+      text: "SELECT owner FROM comments WHERE id = $1",
       values: [commentId],
     };
 
-    const {rows} = await this._pool.query(query);
-    if (!rows.length) throw new NotFoundError('comment tidak ditemukan');
-    if (rows[0].owner !== owner) throw new AuthorizationError('Missing authentication');
+    const { rows } = await this._pool.query(query);
+    if (!rows.length) throw new NotFoundError("comment tidak ditemukan");
+    if (rows[0].owner !== owner)
+      throw new AuthorizationError("Missing authentication");
   },
 
-  async deleteComment({
-    commentId = 'comment-123',
-    threadId = 'thread-123',
-  }) {
+  async deleteComment({ commentId = "comment-123", threadId = "thread-123" }) {
     const query = {
-      text: 'UPDATE comments SET is_delete = true WHERE id = $1 AND thread_id = $2',
+      text: "UPDATE comments SET is_delete = true WHERE id = $1 AND thread_id = $2",
       values: [commentId, threadId],
     };
 
@@ -68,7 +63,7 @@ const CommentsTableTestHelper = {
   },
 
   async cleanTable() {
-    await pool.query('DELETE FROM comments WHERE 1=1');
+    await pool.query("DELETE FROM comments WHERE 1=1");
   },
 };
 

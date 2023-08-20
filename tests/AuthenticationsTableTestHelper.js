@@ -1,10 +1,10 @@
 /* istanbul ignore file */
-const pool = require('../src/Infrastructures/database/postgres/pool');
+const pool = require("../src/Infrastructures/database/postgres/pool");
 
 const AuthenticationsTableTestHelper = {
   async addToken(token) {
     const query = {
-      text: 'INSERT INTO authentications VALUES($1)',
+      text: "INSERT INTO authentications VALUES($1)",
       values: [token],
     };
 
@@ -13,7 +13,7 @@ const AuthenticationsTableTestHelper = {
 
   async findToken(token) {
     const query = {
-      text: 'SELECT token FROM authentications WHERE token = $1',
+      text: "SELECT token FROM authentications WHERE token = $1",
       values: [token],
     };
 
@@ -22,7 +22,7 @@ const AuthenticationsTableTestHelper = {
     return result.rows;
   },
   async cleanTable() {
-    await pool.query('DELETE FROM authentications WHERE 1=1');
+    await pool.query("DELETE FROM authentications WHERE 1=1");
   },
 };
 

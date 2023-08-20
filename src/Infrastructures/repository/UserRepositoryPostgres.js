@@ -1,6 +1,6 @@
-const InvariantError = require('../../Commons/exceptions/InvariantError');
-const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
-const UserRepository = require('../../Domains/users/UserRepository');
+const InvariantError = require("../../Commons/exceptions/InvariantError");
+const RegisteredUser = require("../../Domains/users/entities/RegisteredUser");
+const UserRepository = require("../../Domains/users/UserRepository");
 
 class UserRepositoryPostgres extends UserRepository {
   constructor(pool, idGenerator) {
@@ -11,41 +11,41 @@ class UserRepositoryPostgres extends UserRepository {
 
   async verifyAvailableUsername(username) {
     const query = {
-      text: 'SELECT username FROM users WHERE username = $1',
+      text: "SELECT username FROM users WHERE username = $1",
       values: [username],
     };
 
     const result = await this._pool.query(query);
 
     if (result.rowCount) {
-      throw new InvariantError('username tidak tersedia');
+      throw new InvariantError("username tidak tersedia");
     }
   }
 
   async addUser(registerUser) {
-    const {username, password, fullname} = registerUser;
+    const { username, password, fullname } = registerUser;
     const id = `user-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id, username, fullname',
+      text: "INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id, username, fullname",
       values: [id, username, password, fullname],
     };
 
     const result = await this._pool.query(query);
 
-    return new RegisteredUser({...result.rows[0]});
+    return new RegisteredUser({ ...result.rows[0] });
   }
 
   async getPasswordByUsername(username) {
     const query = {
-      text: 'SELECT password FROM users WHERE username = $1',
+      text: "SELECT password FROM users WHERE username = $1",
       values: [username],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('username tidak ditemukan');
+      throw new InvariantError("username tidak ditemukan");
     }
 
     return result.rows[0].password;
@@ -53,34 +53,34 @@ class UserRepositoryPostgres extends UserRepository {
 
   async getUsernameById(userId) {
     const query = {
-      text: 'SELECT username FROM users WHERE id = $1',
+      text: "SELECT username FROM users WHERE id = $1",
       values: [userId],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('username tidak ditemukan');
+      throw new InvariantError("username tidak ditemukan");
     }
 
-    const {username} = result.rows[0];
+    const { username } = result.rows[0];
 
     return username;
   }
 
   async getIdByUsername(username) {
     const query = {
-      text: 'SELECT id FROM users WHERE username = $1',
+      text: "SELECT id FROM users WHERE username = $1",
       values: [username],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('user tidak ditemukan');
+      throw new InvariantError("user tidak ditemukan");
     }
 
-    const {id} = result.rows[0];
+    const { id } = result.rows[0];
 
     return id;
   }

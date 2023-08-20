@@ -1,7 +1,7 @@
-const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
-const NotFoundError = require('../../Commons/exceptions/NotFoundError');
-const CommentRepository = require('../../Domains/comments/CommentRepository');
-const AddedComment = require('../../Domains/comments/entities/AddedComment');
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
+const NotFoundError = require("../../Commons/exceptions/NotFoundError");
+const CommentRepository = require("../../Domains/comments/CommentRepository");
+const AddedComment = require("../../Domains/comments/entities/AddedComment");
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator, timestampGenerator) {
@@ -12,29 +12,29 @@ class CommentRepositoryPostgres extends CommentRepository {
   }
 
   async addComment(payload) {
-    const {content, owner, threadId} = payload;
+    const { content, owner, threadId } = payload;
     const id = `comment-${this._idGenerator()}`;
     const date = this._timestampGenerator();
 
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner',
+      text: "INSERT INTO comments VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner",
       values: [id, content, date, owner, threadId],
     };
 
     const result = await this._pool.query(query);
-    return new AddedComment({...result.rows[0]});
+    return new AddedComment({ ...result.rows[0] });
   }
 
   async verifyAvailableComment(commentId) {
     const query = {
-      text: 'SELECT id FROM comments WHERE id = $1',
+      text: "SELECT id FROM comments WHERE id = $1",
       values: [commentId],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError('komentar tidak ditemukan');
+      throw new NotFoundError("komentar tidak ditemukan");
     } else {
       return result.rows[0];
     }
@@ -54,25 +54,25 @@ class CommentRepositoryPostgres extends CommentRepository {
   }
 
   async verifyCommentOwner(payload) {
-    const {commentId, owner} = payload;
+    const { commentId, owner } = payload;
 
     const query = {
-      text: 'SELECT owner FROM comments WHERE id = $1',
+      text: "SELECT owner FROM comments WHERE id = $1",
       values: [commentId],
     };
 
-    const {rows} = await this._pool.query(query);
-    if (!rows.length) throw new NotFoundError('komentar tidak ditemukan');
+    const { rows } = await this._pool.query(query);
+    if (!rows.length) throw new NotFoundError("komentar tidak ditemukan");
     if (rows[0].owner !== owner) {
-      throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+      throw new AuthorizationError("Anda tidak berhak mengakses resource ini");
     }
   }
 
   async deleteComment(payload) {
-    const {commentId, owner} = payload;
+    const { commentId, owner } = payload;
 
     const query = {
-      text: 'UPDATE comments SET is_delete = true WHERE id = $1 AND owner = $2',
+      text: "UPDATE comments SET is_delete = true WHERE id = $1 AND owner = $2",
       values: [commentId, owner],
     };
 

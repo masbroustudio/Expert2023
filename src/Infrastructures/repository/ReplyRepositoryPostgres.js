@@ -1,7 +1,7 @@
-const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
-const NotFoundError = require('../../Commons/exceptions/NotFoundError');
-const ReplyRepository = require('../../Domains/replies/ReplyRepository');
-const AddedReply = require('../../Domains/replies/entities/AddedReply');
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
+const NotFoundError = require("../../Commons/exceptions/NotFoundError");
+const ReplyRepository = require("../../Domains/replies/ReplyRepository");
+const AddedReply = require("../../Domains/replies/entities/AddedReply");
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator, timestampGenerator) {
@@ -12,31 +12,31 @@ class ReplyRepositoryPostgres extends ReplyRepository {
   }
 
   async addReply(payload) {
-    const {content, owner, commentId} = payload;
+    const { content, owner, commentId } = payload;
     const id = `reply-${this._idGenerator()}`;
     const date = this._timestampGenerator();
 
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner',
+      text: "INSERT INTO replies VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner",
       values: [id, content, date, owner, commentId],
     };
 
     const result = await this._pool.query(query);
-    return new AddedReply({...result.rows[0]});
+    return new AddedReply({ ...result.rows[0] });
   }
 
   async verifyReplyOwner(payload) {
-    const {replyId, owner} = payload;
+    const { replyId, owner } = payload;
 
     const query = {
-      text: 'SELECT owner FROM replies WHERE id = $1',
+      text: "SELECT owner FROM replies WHERE id = $1",
       values: [replyId],
     };
 
-    const {rows} = await this._pool.query(query);
-    if (!rows.length) throw new NotFoundError('reply tidak ditemukan');
+    const { rows } = await this._pool.query(query);
+    if (!rows.length) throw new NotFoundError("reply tidak ditemukan");
     if (rows[0].owner !== owner) {
-      throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+      throw new AuthorizationError("Anda tidak berhak mengakses resource ini");
     }
   }
 
@@ -49,15 +49,15 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       values: [commentId],
     };
 
-    const {rows} = await this._pool.query(query);
+    const { rows } = await this._pool.query(query);
     return rows;
   }
 
   async deleteReply(payload) {
-    const {replyId, owner} = payload;
+    const { replyId, owner } = payload;
 
     const query = {
-      text: 'UPDATE replies SET is_delete = true WHERE id = $1 AND owner = $2',
+      text: "UPDATE replies SET is_delete = true WHERE id = $1 AND owner = $2",
       values: [replyId, owner],
     };
 

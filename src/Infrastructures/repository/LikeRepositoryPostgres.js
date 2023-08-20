@@ -1,4 +1,4 @@
-const LikeRepository = require('../../Domains/likes/LikeRepository');
+const LikeRepository = require("../../Domains/likes/LikeRepository");
 
 class LikeRepositoryPostgres extends LikeRepository {
   constructor(pool, idGenerator) {
@@ -8,10 +8,10 @@ class LikeRepositoryPostgres extends LikeRepository {
   }
 
   async checkLike(payload) {
-    const {owner, commentId} = payload;
+    const { owner, commentId } = payload;
 
     const query = {
-      text: 'SELECT id FROM likes WHERE owner = $1 AND comment_id = $2',
+      text: "SELECT id FROM likes WHERE owner = $1 AND comment_id = $2",
       values: [owner, commentId],
     };
 
@@ -20,15 +20,15 @@ class LikeRepositoryPostgres extends LikeRepository {
       return false;
     } else {
       return true;
-    };
+    }
   }
 
   async addLike(payload) {
-    const {owner, commentId} = payload;
+    const { owner, commentId } = payload;
     const id = `like-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO likes VALUES($1, $2, $3) RETURNING id',
+      text: "INSERT INTO likes VALUES($1, $2, $3) RETURNING id",
       values: [id, commentId, owner],
     };
 
@@ -36,10 +36,10 @@ class LikeRepositoryPostgres extends LikeRepository {
   }
 
   async deleteLike(payload) {
-    const {owner, commentId} = payload;
+    const { owner, commentId } = payload;
 
     const query = {
-      text: 'DELETE FROM likes WHERE owner = $1 AND comment_id = $2',
+      text: "DELETE FROM likes WHERE owner = $1 AND comment_id = $2",
       values: [owner, commentId],
     };
 
@@ -48,7 +48,7 @@ class LikeRepositoryPostgres extends LikeRepository {
 
   async getLikeCount(commentId) {
     const query = {
-      text: 'SELECT id FROM likes WHERE comment_id = $1',
+      text: "SELECT id FROM likes WHERE comment_id = $1",
       values: [commentId],
     };
 

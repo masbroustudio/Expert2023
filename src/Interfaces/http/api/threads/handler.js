@@ -1,11 +1,11 @@
-const AddThreadUseCase = require('../../../../Applications/use_case/AddThreadUseCase');
-const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
-const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
-const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
-const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
-const GetThreadUseCase = require('../../../../Applications/use_case/GetThreadUseCase');
-const LikeCommentUseCase = require('../../../../Applications/use_case/LikeCommentUseCase');
-const AuthenticationTokenManager = require('../../../../Applications/security/AuthenticationTokenManager');
+const AddThreadUseCase = require("../../../../Applications/use_case/AddThreadUseCase");
+const AddReplyUseCase = require("../../../../Applications/use_case/AddReplyUseCase");
+const AddCommentUseCase = require("../../../../Applications/use_case/AddCommentUseCase");
+const DeleteReplyUseCase = require("../../../../Applications/use_case/DeleteReplyUseCase");
+const DeleteCommentUseCase = require("../../../../Applications/use_case/DeleteCommentUseCase");
+const GetThreadUseCase = require("../../../../Applications/use_case/GetThreadUseCase");
+const LikeCommentUseCase = require("../../../../Applications/use_case/LikeCommentUseCase");
+const AuthenticationTokenManager = require("../../../../Applications/security/AuthenticationTokenManager");
 
 class ThreadsHandler {
   constructor(container) {
@@ -22,23 +22,28 @@ class ThreadsHandler {
 
   async postThreadHandler(request, h) {
     const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
-    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+    const jwtTokenManager = this._container.getInstance(
+      AuthenticationTokenManager.name,
+    );
 
     // Handling payload just undefined
     request.payload = request.payload ?? {};
 
     // Handling authHeader
-    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    const authHeader =
+      (request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]) ||
+      null;
     if (authHeader) {
-      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      const { id } = await jwtTokenManager.decodePayload(authHeader);
       request.payload.owner = id;
     }
 
     const addedThread = await addThreadUseCase.execute(request.payload);
 
     const response = h.response({
-      'status': 'success',
-      'data': {
+      status: "success",
+      data: {
         addedThread,
       },
     });
@@ -47,27 +52,34 @@ class ThreadsHandler {
   }
 
   async postCommentHandler(request, h) {
-    const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
-    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+    const addCommentUseCase = this._container.getInstance(
+      AddCommentUseCase.name,
+    );
+    const jwtTokenManager = this._container.getInstance(
+      AuthenticationTokenManager.name,
+    );
 
     // Handling payload just undefined
     request.payload = request.payload ?? {};
 
     // Handling authHeader
-    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    const authHeader =
+      (request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]) ||
+      null;
     if (authHeader) {
-      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      const { id } = await jwtTokenManager.decodePayload(authHeader);
       request.payload.owner = id;
     }
 
-    const threadId = (request.params && request.params.threadId);
+    const threadId = request.params && request.params.threadId;
     request.payload.threadId = threadId;
 
     const addedComment = await addCommentUseCase.execute(request.payload);
 
     const response = h.response({
-      'status': 'success',
-      'data': {
+      status: "success",
+      data: {
         addedComment,
       },
     });
@@ -77,28 +89,33 @@ class ThreadsHandler {
 
   async postReplyHandler(request, h) {
     const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
-    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+    const jwtTokenManager = this._container.getInstance(
+      AuthenticationTokenManager.name,
+    );
 
     // Handling payload just undefined
     request.payload = request.payload ?? {};
 
     // Handling authHeader
-    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    const authHeader =
+      (request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]) ||
+      null;
     if (authHeader) {
-      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      const { id } = await jwtTokenManager.decodePayload(authHeader);
       request.payload.owner = id;
     }
 
-    const threadId = (request.params && request.params.threadId);
-    const commentId = (request.params && request.params.commentId);
+    const threadId = request.params && request.params.threadId;
+    const commentId = request.params && request.params.commentId;
     request.payload.threadId = threadId;
     request.payload.commentId = commentId;
 
     const addedReply = await addReplyUseCase.execute(request.payload);
 
     const response = h.response({
-      'status': 'success',
-      'data': {
+      status: "success",
+      data: {
         addedReply,
       },
     });
@@ -107,22 +124,29 @@ class ThreadsHandler {
   }
 
   async deleteReplyHandler(request, h) {
-    const deleteReplyUseCase = this._container.getInstance(DeleteReplyUseCase.name);
-    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+    const deleteReplyUseCase = this._container.getInstance(
+      DeleteReplyUseCase.name,
+    );
+    const jwtTokenManager = this._container.getInstance(
+      AuthenticationTokenManager.name,
+    );
 
     // Handling payload just undefined
     request.payload = request.payload ?? {};
 
     // Handling authHeader
-    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    const authHeader =
+      (request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]) ||
+      null;
     if (authHeader) {
-      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      const { id } = await jwtTokenManager.decodePayload(authHeader);
       request.payload.owner = id;
     }
 
-    const threadId = (request.params && request.params.threadId);
-    const commentId = (request.params && request.params.commentId);
-    const replyId = (request.params && request.params.replyId);
+    const threadId = request.params && request.params.threadId;
+    const commentId = request.params && request.params.commentId;
+    const replyId = request.params && request.params.replyId;
     request.payload.threadId = threadId;
     request.payload.commentId = commentId;
     request.payload.replyId = replyId;
@@ -130,35 +154,42 @@ class ThreadsHandler {
     await deleteReplyUseCase.execute(request.payload);
 
     const response = h.response({
-      status: 'success',
+      status: "success",
     });
     response.code(200);
     return response;
   }
 
   async deleteCommentHandler(request, h) {
-    const deleteThreadCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
-    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+    const deleteThreadCommentUseCase = this._container.getInstance(
+      DeleteCommentUseCase.name,
+    );
+    const jwtTokenManager = this._container.getInstance(
+      AuthenticationTokenManager.name,
+    );
 
     // Handling payload just undefined
     request.payload = request.payload ?? {};
 
     // Handling authHeader
-    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    const authHeader =
+      (request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]) ||
+      null;
     if (authHeader) {
-      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      const { id } = await jwtTokenManager.decodePayload(authHeader);
       request.payload.owner = id;
     }
 
-    const threadId = (request.params && request.params.threadId);
-    const commentId = (request.params && request.params.commentId);
+    const threadId = request.params && request.params.threadId;
+    const commentId = request.params && request.params.commentId;
     request.payload.threadId = threadId;
     request.payload.commentId = commentId;
 
     await deleteThreadCommentUseCase.execute(request.payload);
 
     const response = h.response({
-      status: 'success',
+      status: "success",
     });
     response.code(200);
     return response;
@@ -167,33 +198,40 @@ class ThreadsHandler {
   async getThreadHandler(request, h) {
     const getThreadUseCase = this._container.getInstance(GetThreadUseCase.name);
 
-    const threadId = (request.params && request.params.threadId);
+    const threadId = request.params && request.params.threadId;
     const thread = await getThreadUseCase.execute(threadId);
 
     const response = h.response({
-      status: 'success',
-      data: {thread},
+      status: "success",
+      data: { thread },
     });
     response.code(200);
     return response;
   }
 
   async putLikeCommentHandler(request, h) {
-    const likeCommentUseCase = this._container.getInstance(LikeCommentUseCase.name);
-    const jwtTokenManager = this._container.getInstance(AuthenticationTokenManager.name);
+    const likeCommentUseCase = this._container.getInstance(
+      LikeCommentUseCase.name,
+    );
+    const jwtTokenManager = this._container.getInstance(
+      AuthenticationTokenManager.name,
+    );
 
     // Handling payload just undefined
     request.payload = request.payload ?? {};
 
     // Handling authHeader
-    const authHeader = (request.headers.authorization && request.headers.authorization.split(' ')[1]) || null;
+    const authHeader =
+      (request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]) ||
+      null;
     if (authHeader) {
-      const {id} = await jwtTokenManager.decodePayload(authHeader);
+      const { id } = await jwtTokenManager.decodePayload(authHeader);
       request.payload.owner = id;
     }
 
-    const threadId = (request.params && request.params.threadId);
-    const commentId = (request.params && request.params.commentId);
+    const threadId = request.params && request.params.threadId;
+    const commentId = request.params && request.params.commentId;
 
     request.payload.threadId = threadId;
     request.payload.commentId = commentId;
@@ -201,7 +239,7 @@ class ThreadsHandler {
     await likeCommentUseCase.execute(request.payload);
 
     const response = h.response({
-      status: 'success',
+      status: "success",
     });
     response.code(200);
     return response;

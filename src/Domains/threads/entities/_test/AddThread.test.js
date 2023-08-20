@@ -1,50 +1,53 @@
-const AddThread = require('../AddThread');
+const AddThread = require("../AddThread");
 
-describe('a AddThread entities', () => {
-  it('should throw error when payload did not contain needed property', () => {
+describe("a AddThread entities", () => {
+  it("should throw error when payload did not contain needed property", () => {
     // Arrange
     const payload = {
-      title: 'TEST THREAD',
-      owner: 'user-123',
+      title: "TEST THREAD",
+      owner: "user-123",
     };
 
     // Action and Assert
-    expect(() => new AddThread(payload))
-        .toThrowError('ADD_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
+    expect(() => new AddThread(payload)).toThrowError(
+      "ADD_THREAD.NOT_CONTAIN_NEEDED_PROPERTY",
+    );
   });
 
-  it('should throw error when payload did not meet data type specification', () => {
+  it("should throw error when payload did not meet data type specification", () => {
     // Arrange
     const payload = {
-      title: 'TEST THREAD',
-      body: 'Hello World Thread',
+      title: "TEST THREAD",
+      body: "Hello World Thread",
       owner: 123,
     };
 
     // Action and Assert
-    expect(() => new AddThread(payload))
-        .toThrowError('ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new AddThread(payload)).toThrowError(
+      "ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION",
+    );
   });
 
-  it('should throw error when payload did not contain owner property', () => {
+  it("should throw error when payload did not contain owner property", () => {
     // Arrange
     const payload = {
-      title: 'TEST THREAD',
-      body: 'Hello World Thread',
+      title: "TEST THREAD",
+      body: "Hello World Thread",
       owner: undefined,
     };
 
     // Action and Assert
-    expect(() => new AddThread(payload))
-        .toThrowError('ADD_THREAD.NOT_MEET_AUTHENTICATION_DATA');
+    expect(() => new AddThread(payload)).toThrowError(
+      "ADD_THREAD.NOT_MEET_AUTHENTICATION_DATA",
+    );
   });
 
-  it('should create AddThread object correctly', () => {
+  it("should create AddThread object correctly", () => {
     // Arrange
     const payload = {
-      title: 'TEST THREAD',
-      body: 'Hello World Thread',
-      owner: 'user-doe1234',
+      title: "TEST THREAD",
+      body: "Hello World Thread",
+      owner: "user-doe1234",
     };
 
     // Action
