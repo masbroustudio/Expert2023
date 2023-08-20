@@ -35,7 +35,7 @@ describe("CommentRepositoryPostgres", () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -60,7 +60,7 @@ describe("CommentRepositoryPostgres", () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -79,7 +79,7 @@ describe("CommentRepositoryPostgres", () => {
       expect(addedComment).toStrictEqual(
         new AddedComment({
           id: "comment-123",
-          content: "Comment from mars",
+          content: "sebuah comment",
           owner: "user-123",
         }),
       );
@@ -100,14 +100,14 @@ describe("CommentRepositoryPostgres", () => {
       // Action & Assert
       await expect(
         commentRepositoryPostgres.verifyAvailableComment("comment-123"),
-      ).rejects.toThrowError("komentar tidak ditemukan");
+      ).rejects.toThrowError("comment tidak valid atau tidak ditemukan");
     });
 
     it("should not throw NotFoundError when comment available", async () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -134,7 +134,7 @@ describe("CommentRepositoryPostgres", () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -155,7 +155,7 @@ describe("CommentRepositoryPostgres", () => {
       expect(comments).toHaveLength(1);
       expect(comments[0]).toStrictEqual({
         id: "comment-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         date: comments[0].date,
         owner: "user-123",
         thread_id: "thread-123",
@@ -182,14 +182,14 @@ describe("CommentRepositoryPostgres", () => {
           commentId: "comment-123",
           owner: "user-123",
         }),
-      ).rejects.toThrowError("komentar tidak ditemukan");
+      ).rejects.toThrowError("comment tidak valid atau tidak ditemukan");
     });
 
-    it("should throw Anda tidak berhak mengakses resource ini when comment owner not match", async () => {
+    it("should throw when comment owner not match", async () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -211,14 +211,14 @@ describe("CommentRepositoryPostgres", () => {
       // Assert
       await expect(
         commentRepositoryPostgres.verifyCommentOwner(result),
-      ).rejects.toThrowError("Anda tidak berhak mengakses resource ini");
+      ).rejects.toThrowError("Tidak dapat akses, anda bukan pemilik comment");
     });
 
     it("should not throw AuthorizationError when comment owner match", async () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -248,7 +248,7 @@ describe("CommentRepositoryPostgres", () => {
       // Arrange
       const addComment = new AddComment({
         threadId: "thread-123",
-        content: "Comment from mars",
+        content: "sebuah comment",
         owner: "user-123",
       });
 
@@ -271,7 +271,7 @@ describe("CommentRepositoryPostgres", () => {
       const comments =
         await commentRepositoryPostgres.getCommentByThreadId("thread-123");
       expect(comments[0]).toStrictEqual({
-        content: "Comment from mars",
+        content: "sebuah comment",
         date: comments[0].date,
         id: "comment-123",
         is_delete: true,

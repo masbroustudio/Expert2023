@@ -4,7 +4,7 @@ describe("a AddThread entities", () => {
   it("should throw error when payload did not contain needed property", () => {
     // Arrange
     const payload = {
-      title: "TEST THREAD",
+      title: "Title New Thread",
       owner: "user-123",
     };
 
@@ -17,8 +17,8 @@ describe("a AddThread entities", () => {
   it("should throw error when payload did not meet data type specification", () => {
     // Arrange
     const payload = {
-      title: "TEST THREAD",
-      body: "Hello World Thread",
+      title: "Title New Thread",
+      body: "New Thread",
       owner: 123,
     };
 
@@ -31,8 +31,8 @@ describe("a AddThread entities", () => {
   it("should throw error when payload did not contain owner property", () => {
     // Arrange
     const payload = {
-      title: "TEST THREAD",
-      body: "Hello World Thread",
+      title: "Title New Thread",
+      body: "New Thread",
       owner: undefined,
     };
 
@@ -45,8 +45,8 @@ describe("a AddThread entities", () => {
   it("should create AddThread object correctly", () => {
     // Arrange
     const payload = {
-      title: "TEST THREAD",
-      body: "Hello World Thread",
+      title: "Title New Thread",
+      body: "New Thread",
       owner: "user-doe1234",
     };
 

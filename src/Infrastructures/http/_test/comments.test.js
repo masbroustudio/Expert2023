@@ -30,9 +30,9 @@ describe("/threads/{threadId}/comments endpoint", () => {
       method: "POST",
       url: "/users",
       payload: {
-        username: "anotherdicoding",
+        username: "yudhae",
         password: "secret",
-        fullname: "Another Dicoding Indonesia",
+        fullname: "Yudha E",
       },
     });
 
@@ -50,7 +50,7 @@ describe("/threads/{threadId}/comments endpoint", () => {
       method: "POST",
       url: "/authentications",
       payload: {
-        username: "anotherdicoding",
+        username: "yudhae",
         password: "secret",
       },
     });
@@ -220,7 +220,7 @@ describe("/threads/{threadId}/comments endpoint", () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("komentar tidak ditemukan");
+      expect(responseJson.message).toEqual("comment tidak valid atau tidak ditemukan");
     });
 
     it("should response 403 when user not the owner of comment", async () => {
@@ -239,7 +239,7 @@ describe("/threads/{threadId}/comments endpoint", () => {
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "Anda tidak berhak mengakses resource ini",
+        "Tidak dapat akses, anda bukan pemilik comment",
       );
     });
 

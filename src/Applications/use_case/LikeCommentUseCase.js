@@ -10,8 +10,9 @@ class LikeCommentUseCase {
 
     await this._threadRepository.verifyAvailableThread(useCasePayload.threadId);
     await this._commentRepository.verifyAvailableComment(
-      useCasePayload.commentId,
+      useCasePayload.commentId
     );
+
     const likeState = await this._likeRepository.checkLike(useCasePayload);
 
     if (likeState) {
@@ -26,11 +27,9 @@ class LikeCommentUseCase {
     if (!owner) {
       throw new Error("LIKE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER");
     }
-
     if (!threadId || !commentId) {
       throw new Error("LIKE_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY");
     }
-
     if (
       typeof threadId !== "string" ||
       typeof commentId !== "string" ||

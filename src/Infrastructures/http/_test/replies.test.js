@@ -1,11 +1,11 @@
+const createServer = require("../createServer");
+const container = require("../../container");
 const pool = require("../../database/postgres/pool");
+const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
+const AuthenticationsTableTestHelper = require("../../../../tests/AuthenticationsTableTestHelper");
 const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
 const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
 const RepliesTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
-const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
-const AuthenticationsTableTestHelper = require("../../../../tests/AuthenticationsTableTestHelper");
-const container = require("../../container");
-const createServer = require("../createServer");
 
 let accessToken;
 let anotherAccessToken;
@@ -31,9 +31,9 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       method: "POST",
       url: "/users",
       payload: {
-        username: "anotherdicoding",
+        username: "yudhae",
         password: "secret",
-        fullname: "Dicoding Indonesia",
+        fullname: "Yudha E",
       },
     });
 
@@ -51,7 +51,7 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       method: "POST",
       url: "/authentications",
       payload: {
-        username: "anotherdicoding",
+        username: "yudhae",
         password: "secret",
       },
     });
@@ -112,27 +112,6 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
   });
 
   describe("when POST /threads/{threadId}/comments/{commentId}/replies", () => {
-    it("should response 401 when access token not provide", async () => {
-      // Arrange
-      const requestPayload = {
-        content: "sebuah Reply",
-      };
-
-      // Action
-      const server = await createServer(container);
-      const response = await server.inject({
-        method: "POST",
-        url: `/threads/${threadId}/comments/${commentId}/replies`,
-        payload: requestPayload,
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("Missing authentication");
-    });
-
     it("should response 201 and persisted reply", async () => {
       // Arrange
       const requestPayload = {
@@ -171,8 +150,29 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak ada",
+        "tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak ada"
       );
+    });
+
+    it("should response 401 when access token not provide", async () => {
+      // Arrange
+      const requestPayload = {
+        content: "sebuah Reply",
+      };
+
+      // Action
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: "POST",
+        url: `/threads/${threadId}/comments/${commentId}/replies`,
+        payload: requestPayload,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(401);
+      expect(responseJson.status).toEqual("fail");
+      expect(responseJson.message).toEqual("Missing authentication");
     });
 
     it("should response 404 when comment not found", async () => {
@@ -196,7 +196,9 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("komentar tidak ditemukan");
+      expect(responseJson.message).toEqual(
+        "comment tidak valid atau tidak ditemukan"
+      );
     });
 
     it("should response 404 when thread not found", async () => {
@@ -225,6 +227,21 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
   });
 
   describe("when DELETE /threads/{threadId}/comments/{commentId}/replies/{replyId}", () => {
+    it("should response 200 when reply owned by credential owner", async () => {
+      // Action
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: "DELETE",
+        url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual("success");
+    });
+
     it("should response 401 when access token not found", async () => {
       // Action
       const server = await createServer(container);
@@ -270,23 +287,8 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "Anda tidak berhak mengakses resource ini",
+        "Tidak dapat akses, anda bukan pemilik reply"
       );
-    });
-
-    it("should response 200 when reply owned by credential owner", async () => {
-      // Action
-      const server = await createServer(container);
-      const response = await server.inject({
-        method: "DELETE",
-        url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
     });
   });
 });

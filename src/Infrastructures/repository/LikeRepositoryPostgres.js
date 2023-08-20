@@ -16,6 +16,7 @@ class LikeRepositoryPostgres extends LikeRepository {
     };
 
     const result = await this._pool.query(query);
+
     if (!result.rowCount) {
       return false;
     } else {

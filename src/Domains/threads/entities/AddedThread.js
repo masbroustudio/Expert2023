@@ -12,7 +12,6 @@ class AddedThread {
     if (!id || !title || !owner) {
       throw new Error("ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY");
     }
-
     if (
       typeof id !== "string" ||
       typeof title !== "string" ||

@@ -6,6 +6,7 @@ class RefreshAuthenticationUseCase {
 
   async execute(useCasePayload) {
     this._verifyPayload(useCasePayload);
+
     const { refreshToken } = useCasePayload;
 
     await this._authenticationTokenManager.verifyRefreshToken(refreshToken);
@@ -20,13 +21,12 @@ class RefreshAuthenticationUseCase {
   _verifyPayload({ refreshToken }) {
     if (!refreshToken) {
       throw new Error(
-        "REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN",
+        "REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN"
       );
     }
-
     if (typeof refreshToken !== "string") {
       throw new Error(
-        "REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION",
+        "REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION"
       );
     }
   }

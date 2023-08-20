@@ -4,8 +4,8 @@ describe("a AddedReply entities", () => {
   it("should throw error when payload did not contain needed property", () => {
     // Arrange
     const payload = {
-      id: "comment-123",
-      content: "Comment from mars",
+      id: "reply-123",
+      content: "Added reply-123",
     };
 
     // Action & Assert
@@ -17,8 +17,8 @@ describe("a AddedReply entities", () => {
   it("should throw error when payload did not meet data type specification", () => {
     // Arrange
     const payload = {
-      id: "comment-123",
-      content: "Comment from mars",
+      id: "reply-123",
+      content: "Added reply-123",
       owner: 123,
     };
 
@@ -31,8 +31,8 @@ describe("a AddedReply entities", () => {
   it("should create AddedReply object correctly", () => {
     // Arrange
     const payload = {
-      id: "comment-123",
-      content: "Comment from mars",
+      id: "reply-123",
+      content: "Added reply-123",
       owner: "user-123",
     };
 

@@ -32,9 +32,9 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       method: "POST",
       url: "/users",
       payload: {
-        username: "anotherdicoding",
+        username: "yudhae",
         password: "secret",
-        fullname: "Another Dicoding Indonesia",
+        fullname: "Yudha E",
       },
     });
 
@@ -52,7 +52,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       method: "POST",
       url: "/authentications",
       payload: {
-        username: "anotherdicoding",
+        username: "yudhae",
         password: "secret",
       },
     });
@@ -178,7 +178,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("komentar tidak ditemukan");
+      expect(responseJson.message).toEqual("comment tidak valid atau tidak ditemukan");
     });
 
     it("should respone 200 when another user like comment", async () => {

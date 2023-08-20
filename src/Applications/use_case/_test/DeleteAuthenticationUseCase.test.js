@@ -9,9 +9,9 @@ describe("DeleteAuthenticationUseCase", () => {
 
     // Action & Assert
     await expect(
-      deleteAuthenticationUseCase.execute(useCasePayload),
+      deleteAuthenticationUseCase.execute(useCasePayload)
     ).rejects.toThrowError(
-      "DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN",
+      "DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN"
     );
   });
 
@@ -20,13 +20,14 @@ describe("DeleteAuthenticationUseCase", () => {
     const useCasePayload = {
       refreshToken: 123,
     };
+
     const deleteAuthenticationUseCase = new DeleteAuthenticationUseCase({});
 
     // Action & Assert
     await expect(
-      deleteAuthenticationUseCase.execute(useCasePayload),
+      deleteAuthenticationUseCase.execute(useCasePayload)
     ).rejects.toThrowError(
-      "DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION",
+      "DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
@@ -35,10 +36,13 @@ describe("DeleteAuthenticationUseCase", () => {
     const useCasePayload = {
       refreshToken: "refreshToken",
     };
+
     const mockAuthenticationRepository = new AuthenticationRepository();
+
     mockAuthenticationRepository.checkAvailabilityToken = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
+
     mockAuthenticationRepository.deleteToken = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
@@ -52,10 +56,11 @@ describe("DeleteAuthenticationUseCase", () => {
 
     // Assert
     expect(
-      mockAuthenticationRepository.checkAvailabilityToken,
+      mockAuthenticationRepository.checkAvailabilityToken
     ).toHaveBeenCalledWith(useCasePayload.refreshToken);
+
     expect(mockAuthenticationRepository.deleteToken).toHaveBeenCalledWith(
-      useCasePayload.refreshToken,
+      useCasePayload.refreshToken
     );
   });
 });

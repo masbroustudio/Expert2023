@@ -1,7 +1,7 @@
-const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
-const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 const ReplyRepository = require("../../Domains/replies/ReplyRepository");
 const AddedReply = require("../../Domains/replies/entities/AddedReply");
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
+const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator, timestampGenerator) {
@@ -36,7 +36,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const { rows } = await this._pool.query(query);
     if (!rows.length) throw new NotFoundError("reply tidak ditemukan");
     if (rows[0].owner !== owner) {
-      throw new AuthorizationError("Anda tidak berhak mengakses resource ini");
+      throw new AuthorizationError("Tidak dapat akses, anda bukan pemilik reply");
     }
   }
 

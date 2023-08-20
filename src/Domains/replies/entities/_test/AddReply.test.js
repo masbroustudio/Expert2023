@@ -18,7 +18,7 @@ describe("a AddReply entities", () => {
     // Arrange
     const payload = {
       commentId: "thread-123",
-      content: "hello mars",
+      content: "sebuah content",
       owner: 123,
     };
 
@@ -32,7 +32,7 @@ describe("a AddReply entities", () => {
     // Arrange
     const payload = {
       commentId: "thread-123",
-      content: "hello mars",
+      content: "sebuah content",
       owner: undefined,
     };
 
@@ -46,7 +46,7 @@ describe("a AddReply entities", () => {
     // Arrange
     const payload = {
       commentId: "thread-123",
-      content: "hello from mars",
+      content: "sebuah content",
       owner: "user-mars123",
     };
 

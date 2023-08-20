@@ -6,10 +6,10 @@ describe("DeleteReplyUseCase", () => {
   it("should throw error if use case payload not contain owner", async () => {
     // Arrange
     const useCasePayload = {};
+
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
 
-    /** creating use case instance */
     const deleteReplyUseCase = new DeleteReplyUseCase({
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
@@ -17,7 +17,7 @@ describe("DeleteReplyUseCase", () => {
 
     // Action & Assert
     await expect(
-      deleteReplyUseCase.execute(useCasePayload),
+      deleteReplyUseCase.execute(useCasePayload)
     ).rejects.toThrowError("DELETE_REPLY_USE_CASE.NOT_CONTAIN_OWNER");
   });
 
@@ -32,7 +32,6 @@ describe("DeleteReplyUseCase", () => {
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
 
-    /** creating use case instance */
     const deleteReplyUseCase = new DeleteReplyUseCase({
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
@@ -40,7 +39,7 @@ describe("DeleteReplyUseCase", () => {
 
     // Action & Assert
     await expect(
-      deleteReplyUseCase.execute(useCasePayload),
+      deleteReplyUseCase.execute(useCasePayload)
     ).rejects.toThrowError("DELETE_REPLY_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY");
   });
 
@@ -55,7 +54,6 @@ describe("DeleteReplyUseCase", () => {
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
 
-    /** creating use case instance */
     const deleteReplyUseCase = new DeleteReplyUseCase({
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
@@ -63,9 +61,9 @@ describe("DeleteReplyUseCase", () => {
 
     // Action & Assert
     await expect(
-      deleteReplyUseCase.execute(useCasePayload),
+      deleteReplyUseCase.execute(useCasePayload)
     ).rejects.toThrowError(
-      "DELETE_REPLY_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION",
+      "DELETE_REPLY_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
@@ -77,22 +75,21 @@ describe("DeleteReplyUseCase", () => {
       owner: "user-123",
     };
 
-    /** creating dependency of use case */
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
 
-    /** mocking needed function */
     mockCommentRepository.verifyAvailableComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
+
     mockReplyRepository.verifyReplyOwner = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
+
     mockReplyRepository.deleteReply = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
 
-    /** creating use case instance */
     const deleteReplyUseCase = new DeleteReplyUseCase({
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
@@ -103,13 +100,15 @@ describe("DeleteReplyUseCase", () => {
 
     // Assert
     expect(mockCommentRepository.verifyAvailableComment).toHaveBeenCalledWith(
-      useCasePayload.commentId,
+      useCasePayload.commentId
     );
+
     expect(mockReplyRepository.verifyReplyOwner).toHaveBeenCalledWith(
-      useCasePayload,
+      useCasePayload
     );
+
     expect(mockReplyRepository.deleteReply).toHaveBeenCalledWith(
-      useCasePayload,
+      useCasePayload
     );
   });
 });

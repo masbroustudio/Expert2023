@@ -13,11 +13,9 @@ class AddComment {
     if (!owner) {
       throw new Error("ADD_COMMENT.NOT_MEET_AUTHENTICATION_DATA");
     }
-
     if (!threadId || !content) {
       throw new Error("ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY");
     }
-
     if (
       typeof threadId !== "string" ||
       typeof content !== "string" ||

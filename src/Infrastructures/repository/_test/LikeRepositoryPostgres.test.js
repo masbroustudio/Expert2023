@@ -1,9 +1,9 @@
+const LikeRepositoryPostgres = require("../LikeRepositoryPostgres");
+const pool = require("../../database/postgres/pool");
 const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
 const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
 const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
 const LikesTableTestHelper = require("../../../../tests/LikesTableTestHelper");
-const LikeRepositoryPostgres = require("../LikeRepositoryPostgres");
-const pool = require("../../database/postgres/pool");
 
 describe("LikeRepositoryPostgres", () => {
   beforeEach(async () => {
@@ -11,14 +11,17 @@ describe("LikeRepositoryPostgres", () => {
       id: "user-123",
       username: "dicoding",
     });
+
     await UsersTableTestHelper.addUser({
-      id: "user-456",
+      id: "user-234",
       username: "dicoding2",
     });
+
     await ThreadsTableTestHelper.addThread({
       id: "thread-123",
       owner: "user-123",
     });
+
     await CommentsTableTestHelper.addComment({
       id: "comment-123",
       threadId: "thread-123",
@@ -49,7 +52,7 @@ describe("LikeRepositoryPostgres", () => {
       // Action
       const like = await likeRepositoryPostgres.checkLike(
         "comment-123",
-        "user-456",
+        "user-234",
       );
       expect(like).toStrictEqual(false);
     });

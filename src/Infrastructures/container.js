@@ -9,6 +9,10 @@ const Jwt = require("@hapi/jwt");
 const pool = require("./database/postgres/pool");
 
 // service (repository, helper, manager, etc)
+const PasswordHash = require("../Applications/security/PasswordHash");
+const BcryptPasswordHash = require("./security/BcryptPasswordHash");
+const AuthenticationTokenManager = require("../Applications/security/AuthenticationTokenManager");
+const JwtTokenManager = require("./security/JwtTokenManager");
 const UserRepository = require("../Domains/users/UserRepository");
 const UserRepositoryPostgres = require("./repository/UserRepositoryPostgres");
 const AuthenticationRepository = require("../Domains/authentications/AuthenticationRepository");
@@ -21,10 +25,6 @@ const ReplyRepository = require("../Domains/replies/ReplyRepository");
 const ReplyRepositoryPostgres = require("./repository/ReplyRepositoryPostgres");
 const LikeRepository = require("../Domains/likes/LikeRepository");
 const LikeRepositoryPostgres = require("./repository/LikeRepositoryPostgres");
-const PasswordHash = require("../Applications/security/PasswordHash");
-const BcryptPasswordHash = require("./security/BcryptPasswordHash");
-const AuthenticationTokenManager = require("../Applications/security/AuthenticationTokenManager");
-const JwtTokenManager = require("./security/JwtTokenManager");
 
 // use case
 const AddUserUseCase = require("../Applications/use_case/AddUserUseCase");

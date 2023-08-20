@@ -6,14 +6,11 @@ const ReplyRepository = require("../../../Domains/replies/ReplyRepository");
 const CommentRepository = require("../../../Domains/comments/CommentRepository");
 
 describe("AddReplyUseCase", () => {
-  /**
-   * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
-   */
   it("should orchestrating the add Reply action correctly", async () => {
     // Arrange
     const useCasePayload = {
       owner: "user-123",
-      content: "HELLO JUPITER",
+      content: "content reply",
       threadId: "thread-123",
       commentId: "comment-123",
     };
@@ -24,23 +21,24 @@ describe("AddReplyUseCase", () => {
       owner: useCasePayload.owner,
     });
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockReplyRepository = new ReplyRepository();
     const mockCommentRepository = new CommentRepository();
 
-    /** mocking needed function */
+    // Mocking
     mockThreadRepository.verifyAvailableThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
+
     mockCommentRepository.verifyAvailableComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
+
     mockReplyRepository.addReply = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockAddedReply));
 
-    /** creating use case instance */
+    // Create Instance
     const addReplyUseCase = new AddReplyUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -56,21 +54,24 @@ describe("AddReplyUseCase", () => {
         id: "reply-123",
         content: useCasePayload.content,
         owner: useCasePayload.owner,
-      }),
+      })
     );
+
     expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(
-      useCasePayload.threadId,
+      useCasePayload.threadId
     );
+
     expect(mockCommentRepository.verifyAvailableComment).toBeCalledWith(
-      useCasePayload.commentId,
+      useCasePayload.commentId
     );
+
     expect(mockReplyRepository.addReply).toBeCalledWith(
       new AddReply({
         threadId: useCasePayload.threadId,
         commentId: useCasePayload.commentId,
         content: useCasePayload.content,
         owner: useCasePayload.owner,
-      }),
+      })
     );
   });
 });

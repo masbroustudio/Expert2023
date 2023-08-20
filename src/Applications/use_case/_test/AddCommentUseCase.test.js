@@ -5,14 +5,11 @@ const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
 const AddCommentUseCase = require("../AddCommentUseCase");
 
 describe("AddCommentUseCase", () => {
-  /**
-   * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
-   */
   it("should orchestrating the add comment action correctly", async () => {
     // Arrange
     const useCasePayload = {
       owner: "user-123",
-      content: "HELLO MARS",
+      content: "sebuah comment",
       threadId: "thread-123",
     };
 
@@ -22,19 +19,19 @@ describe("AddCommentUseCase", () => {
       owner: useCasePayload.owner,
     });
 
-    /** creating dependency of use case */
+    // Mocking
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    /** mocking needed function */
     mockThreadRepository.verifyAvailableThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
+
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockAddedComment));
 
-    /** creating use case instance */
+    // Create Instance
     const addCommentUseCase = new AddCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -49,17 +46,19 @@ describe("AddCommentUseCase", () => {
         id: "comment-123",
         content: useCasePayload.content,
         owner: useCasePayload.owner,
-      }),
+      })
     );
+
     expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(
-      useCasePayload.threadId,
+      useCasePayload.threadId
     );
+
     expect(mockCommentRepository.addComment).toBeCalledWith(
       new AddComment({
         threadId: useCasePayload.threadId,
         content: useCasePayload.content,
         owner: useCasePayload.owner,
-      }),
+      })
     );
   });
 });

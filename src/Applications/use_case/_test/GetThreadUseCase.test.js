@@ -11,13 +11,12 @@ describe("GetThreadUseCase", () => {
       threadId: "thread-123",
     };
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
     const mockLikeRepository = new LikeRepository();
 
-    /** mocking needed function */
+    
     mockThreadRepository.getThreadById = jest.fn().mockImplementation(() =>
       Promise.resolve({
         id: "thread-123",
@@ -25,7 +24,7 @@ describe("GetThreadUseCase", () => {
         body: "sebuah body thread",
         date: "2021-08-08T07:22:33.555Z",
         owner: "user-123",
-      }),
+      })
     );
 
     mockCommentRepository.getCommentByThreadId = jest
@@ -41,7 +40,7 @@ describe("GetThreadUseCase", () => {
             is_delete: false,
             username: "dicoding",
           },
-        ]),
+        ])
       );
 
     mockReplyRepository.getReplyByCommentId = jest.fn().mockImplementation(() =>
@@ -55,7 +54,7 @@ describe("GetThreadUseCase", () => {
           is_delete: false,
           username: "dicoding",
         },
-      ]),
+      ])
     );
 
     mockLikeRepository.getLikeCount = jest.fn(() => Promise.resolve(1));
@@ -74,10 +73,10 @@ describe("GetThreadUseCase", () => {
     // Assert
     expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload);
     expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(
-      useCasePayload,
+      useCasePayload
     );
     expect(mockReplyRepository.getReplyByCommentId).toBeCalledWith(
-      "comment-123",
+      "comment-123"
     );
     expect(result).toStrictEqual({
       id: "thread-123",
@@ -125,7 +124,7 @@ describe("GetThreadUseCase", () => {
         body: "sebuah body thread",
         date: "2021-08-08T07:22:33.555Z",
         owner: "user-123",
-      }),
+      })
     );
     mockCommentRepository.getCommentByThreadId = jest
       .fn()
@@ -140,7 +139,7 @@ describe("GetThreadUseCase", () => {
             is_delete: true,
             username: "dicoding",
           },
-        ]),
+        ])
       );
     mockReplyRepository.getReplyByCommentId = jest.fn().mockImplementation(() =>
       Promise.resolve([
@@ -153,7 +152,7 @@ describe("GetThreadUseCase", () => {
           is_delete: true,
           username: "dicoding",
         },
-      ]),
+      ])
     );
     mockLikeRepository.getLikeCount = jest.fn(() => Promise.resolve(1));
 
@@ -171,10 +170,10 @@ describe("GetThreadUseCase", () => {
     // Assert
     expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload);
     expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(
-      useCasePayload,
+      useCasePayload
     );
     expect(mockReplyRepository.getReplyByCommentId).toBeCalledWith(
-      "comment-123",
+      "comment-123"
     );
     expect(result).toStrictEqual({
       id: "thread-123",

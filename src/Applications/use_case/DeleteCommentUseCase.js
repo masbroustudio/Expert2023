@@ -9,7 +9,7 @@ class DeleteCommentUseCase {
 
     await this._threadRepository.verifyAvailableThread(useCasePayload.threadId);
     await this._commentRepository.verifyAvailableComment(
-      useCasePayload.commentId,
+      useCasePayload.commentId
     );
     await this._commentRepository.verifyCommentOwner(useCasePayload);
     await this._commentRepository.deleteComment(useCasePayload);
@@ -30,7 +30,7 @@ class DeleteCommentUseCase {
       typeof commentId !== "string"
     ) {
       throw new Error(
-        "DELETE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION",
+        "DELETE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION"
       );
     }
   }

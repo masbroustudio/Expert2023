@@ -1,10 +1,10 @@
+const AddReply = require("../../../Domains/replies/entities/AddReply");
+const ReplyRepositoryPostgres = require("../ReplyRepositoryPostgres");
+const pool = require("../../database/postgres/pool");
 const RepliesTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
 const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
 const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
 const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
-const AddReply = require("../../../Domains/replies/entities/AddReply");
-const ReplyRepositoryPostgres = require("../ReplyRepositoryPostgres");
-const pool = require("../../database/postgres/pool");
 
 describe("ReplyRepositoryPostgres", () => {
   beforeEach(async () => {
@@ -12,14 +12,16 @@ describe("ReplyRepositoryPostgres", () => {
       id: "user-123",
       username: "dicoding",
     });
+
     await ThreadsTableTestHelper.addThread({
       id: "thread-123",
       owner: "user-123",
     });
+
     await CommentsTableTestHelper.addComment({
       id: "comment-123",
-      owner: "user-123",
       threadId: "thread-123",
+      owner: "user-123",
     });
   });
 
@@ -39,16 +41,17 @@ describe("ReplyRepositoryPostgres", () => {
       // Arrange
       const addReply = new AddReply({
         commentId: "comment-123",
-        content: "Reply from mars",
         owner: "user-123",
+        content: "sebuah content",
       });
 
       const fakeIdGenerator = () => "123";
       const fakeTimestampGenerator = () => new Date().toISOString();
+
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -57,12 +60,14 @@ describe("ReplyRepositoryPostgres", () => {
       // Assert
       const reply =
         await RepliesTableTestHelper.getReplyByCommentId("comment-123");
+
       expect(reply).toHaveLength(1);
+
       expect(reply[0]).toStrictEqual({
         id: "reply-123",
-        content: "Reply from mars",
-        date: reply[0].date,
         username: "dicoding",
+        content: "sebuah content",
+        date: reply[0].date,
       });
     });
   });
@@ -75,7 +80,7 @@ describe("ReplyRepositoryPostgres", () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action & Assert
@@ -83,7 +88,7 @@ describe("ReplyRepositoryPostgres", () => {
         replyRepositoryPostgres.verifyReplyOwner({
           replyId: "reply-123",
           owner: "user-123",
-        }),
+        })
       ).rejects.toThrowError("reply tidak ditemukan");
     });
 
@@ -91,8 +96,8 @@ describe("ReplyRepositoryPostgres", () => {
       // Arrange
       const addReply = new AddReply({
         commentId: "comment-123",
-        content: "Comment from mars1",
         owner: "user-123",
+        content: "sebuah content",
       });
 
       const fakeIdGenerator = () => "123";
@@ -100,36 +105,36 @@ describe("ReplyRepositoryPostgres", () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
       const result = await replyRepositoryPostgres.addReply(addReply);
 
-      // Override result
       result.replyId = result.id;
       result.owner = "user-1234";
 
       // Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner(result),
-      ).rejects.toThrowError("Anda tidak berhak mengakses resource ini");
+        replyRepositoryPostgres.verifyReplyOwner(result)
+      ).rejects.toThrowError("Tidak dapat akses, anda bukan pemilik reply");
     });
 
     it("should not throw AuthorizationError when reply owner match", async () => {
       // Arrange
       const addReply = new AddReply({
         commentId: "comment-123",
-        content: "Comment from mars1",
         owner: "user-123",
+        content: "sebuah content",
       });
 
       const fakeIdGenerator = () => "123";
       const fakeTimestampGenerator = () => new Date().toISOString();
+
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -140,8 +145,8 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner(result),
-      ).resolves.not.toThrowError("Anda tidak berhak mengakses resource ini");
+        replyRepositoryPostgres.verifyReplyOwner(result)
+      ).resolves.not.toThrowError("Tidak dapat akses, anda bukan pemilik reply");
     });
   });
 
@@ -150,16 +155,17 @@ describe("ReplyRepositoryPostgres", () => {
       // Arrange
       const addReply = new AddReply({
         commentId: "comment-123",
-        content: "Comment from mars",
         owner: "user-123",
+        content: "sebuah content",
       });
 
       const fakeIdGenerator = () => "123";
       const fakeTimestampGenerator = () => new Date().toISOString();
+
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -168,10 +174,11 @@ describe("ReplyRepositoryPostgres", () => {
       // Assert
       const replies =
         await replyRepositoryPostgres.getReplyByCommentId("comment-123");
+
       expect(replies).toHaveLength(1);
       expect(replies[0]).toStrictEqual({
         comment_id: "comment-123",
-        content: "Comment from mars",
+        content: "sebuah content",
         date: replies[0].date,
         id: "reply-123",
         is_delete: false,
@@ -186,16 +193,17 @@ describe("ReplyRepositoryPostgres", () => {
       // Arrange
       const addReply = new AddReply({
         commentId: "comment-123",
-        content: "Comment from mars",
         owner: "user-123",
+        content: "sebuah content",
       });
 
       const fakeIdGenerator = () => "123";
       const fakeTimestampGenerator = () => new Date().toISOString();
+
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -210,7 +218,7 @@ describe("ReplyRepositoryPostgres", () => {
         await replyRepositoryPostgres.getReplyByCommentId("comment-123");
       expect(replies[0]).toStrictEqual({
         comment_id: "comment-123",
-        content: "Comment from mars",
+        content: "sebuah content",
         date: replies[0].date,
         id: "reply-123",
         is_delete: true,

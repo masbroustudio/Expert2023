@@ -8,12 +8,10 @@ describe("LikeCommentUseCase", () => {
     // Arrange
     const useCasePayload = {};
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockLikeRepository = new LikeRepository();
 
-    /** creating use case instance */
     const likeCommentUseCase = new LikeCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -22,7 +20,7 @@ describe("LikeCommentUseCase", () => {
 
     // Action & Assert
     await expect(
-      likeCommentUseCase.execute(useCasePayload),
+      likeCommentUseCase.execute(useCasePayload)
     ).rejects.toThrowError("LIKE_COMMENT_USE_CASE.NOT_CONTAIN_OWNER");
   });
 
@@ -34,12 +32,10 @@ describe("LikeCommentUseCase", () => {
       owner: "user-123",
     };
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockLikeRepository = new LikeRepository();
 
-    /** creating use case instance */
     const likeCommentUseCase = new LikeCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -48,7 +44,7 @@ describe("LikeCommentUseCase", () => {
 
     // Action & Assert
     await expect(
-      likeCommentUseCase.execute(useCasePayload),
+      likeCommentUseCase.execute(useCasePayload)
     ).rejects.toThrowError("LIKE_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY");
   });
 
@@ -60,12 +56,10 @@ describe("LikeCommentUseCase", () => {
       owner: 123,
     };
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockLikeRepository = new LikeRepository();
 
-    /** creating use case instance */
     const likeCommentUseCase = new LikeCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -74,9 +68,9 @@ describe("LikeCommentUseCase", () => {
 
     // Action & Assert
     await expect(
-      likeCommentUseCase.execute(useCasePayload),
+      likeCommentUseCase.execute(useCasePayload)
     ).rejects.toThrowError(
-      "LIKE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION",
+      "LIKE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
@@ -88,22 +82,22 @@ describe("LikeCommentUseCase", () => {
       owner: "user-123",
     };
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockLikeRepository = new LikeRepository();
 
-    /** mock needed function */
     mockThreadRepository.verifyAvailableThread = jest.fn(() =>
-      Promise.resolve(),
+      Promise.resolve()
     );
+
     mockCommentRepository.verifyAvailableComment = jest.fn(() =>
-      Promise.resolve(),
+      Promise.resolve()
     );
+
     mockLikeRepository.checkLike = jest.fn(() => Promise.resolve(false));
+
     mockLikeRepository.addLike = jest.fn(() => Promise.resolve());
 
-    /** creating use case instance */
     const likeCommentUseCase = new LikeCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -115,12 +109,15 @@ describe("LikeCommentUseCase", () => {
 
     // Assert
     expect(mockThreadRepository.verifyAvailableThread).toHaveBeenCalledWith(
-      useCasePayload.threadId,
+      useCasePayload.threadId
     );
+
     expect(mockCommentRepository.verifyAvailableComment).toHaveBeenCalledWith(
-      useCasePayload.commentId,
+      useCasePayload.commentId
     );
+
     expect(mockLikeRepository.checkLike).toHaveBeenCalledWith(useCasePayload);
+
     expect(mockLikeRepository.addLike).toHaveBeenCalledWith(useCasePayload);
   });
 
@@ -132,22 +129,22 @@ describe("LikeCommentUseCase", () => {
       owner: "user-123",
     };
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockLikeRepository = new LikeRepository();
 
-    /** mock needed function */
     mockThreadRepository.verifyAvailableThread = jest.fn(() =>
-      Promise.resolve(),
+      Promise.resolve()
     );
+
     mockCommentRepository.verifyAvailableComment = jest.fn(() =>
-      Promise.resolve(),
+      Promise.resolve()
     );
+
     mockLikeRepository.checkLike = jest.fn(() => Promise.resolve(true));
+
     mockLikeRepository.deleteLike = jest.fn(() => Promise.resolve());
 
-    /** creating use case instance */
     const likeCommentUseCase = new LikeCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -159,10 +156,10 @@ describe("LikeCommentUseCase", () => {
 
     // Assert
     expect(mockThreadRepository.verifyAvailableThread).toHaveBeenCalledWith(
-      useCasePayload.threadId,
+      useCasePayload.threadId
     );
     expect(mockCommentRepository.verifyAvailableComment).toHaveBeenCalledWith(
-      useCasePayload.commentId,
+      useCasePayload.commentId
     );
     expect(mockLikeRepository.checkLike).toHaveBeenCalledWith(useCasePayload);
     expect(mockLikeRepository.deleteLike).toHaveBeenCalledWith(useCasePayload);

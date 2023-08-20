@@ -1,9 +1,9 @@
-const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
-const ForumsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
 const AddedThread = require("../../../Domains/threads/entities/AddedThread");
 const AddThread = require("../../../Domains/threads/entities/AddThread");
 const ThreadRepositoryPostgres = require("../ThreadRepositoryPostgres");
 const pool = require("../../database/postgres/pool");
+const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
+const ForumsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
 
 describe("ThreadRepositoryPostgres", () => {
   beforeEach(async () => {
@@ -26,9 +26,9 @@ describe("ThreadRepositoryPostgres", () => {
     it("should persist added thread", async () => {
       // Arrange
       const addThread = new AddThread({
-        title: "HELLOWORLD123!!!",
-        body: "OHHH HELLO WORLD !!!",
         owner: "user-123",
+        title: "Title New Thread",
+        body: "Thread Content Here",
       });
 
       const fakeIdGenerator = () => "123";
@@ -36,7 +36,7 @@ describe("ThreadRepositoryPostgres", () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -50,16 +50,16 @@ describe("ThreadRepositoryPostgres", () => {
     it("should return added thread correctly", async () => {
       // Arrange
       const addThread = new AddThread({
-        title: "HELLOWORLD!!!",
-        body: "OHHH HELLO WORLD !!!",
         owner: "user-123",
+        title: "Title New Thread",
+        body: "Thread Content Here",
       });
       const fakeIdGenerator = () => "1234";
       const fakeTimestampGenerator = () => new Date().toISOString();
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -69,9 +69,9 @@ describe("ThreadRepositoryPostgres", () => {
       expect(addedThread).toStrictEqual(
         new AddedThread({
           id: "thread-1234",
-          title: "HELLOWORLD!!!",
           owner: "user-123",
-        }),
+          title: "Title New Thread",
+        })
       );
     });
   });
@@ -80,9 +80,9 @@ describe("ThreadRepositoryPostgres", () => {
     it("should not throw NotFoundError when thread available", async () => {
       // Arrange
       const addThread = new AddThread({
-        title: "HELLOWORLD123!!!",
-        body: "OHHH HELLO WORLD !!!",
         owner: "user-123",
+        title: "Title New Thread",
+        body: "Thread Content Here",
       });
 
       const fakeIdGenerator = () => "123";
@@ -90,7 +90,7 @@ describe("ThreadRepositoryPostgres", () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -98,7 +98,7 @@ describe("ThreadRepositoryPostgres", () => {
 
       // Assert
       await expect(
-        threadRepositoryPostgres.verifyAvailableThread("thread-123"),
+        threadRepositoryPostgres.verifyAvailableThread("thread-123")
       ).resolves.not.toThrowError("thread tidak ditemukan");
     });
 
@@ -109,12 +109,12 @@ describe("ThreadRepositoryPostgres", () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action & Assert
       await expect(
-        threadRepositoryPostgres.verifyAvailableThread("thread-123"),
+        threadRepositoryPostgres.verifyAvailableThread("thread-123")
       ).rejects.toThrowError("thread tidak ditemukan");
     });
   });
@@ -123,9 +123,9 @@ describe("ThreadRepositoryPostgres", () => {
     it("should return thread correctly", async () => {
       // Arrange
       const addThread = new AddThread({
-        title: "HELLOWORLD!!!",
-        body: "OHHH HELLO WORLD !!!",
         owner: "user-123",
+        title: "Title New Thread",
+        body: "Thread Content Here",
       });
 
       const fakeIdGenerator = () => "123";
@@ -133,7 +133,7 @@ describe("ThreadRepositoryPostgres", () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action
@@ -143,10 +143,10 @@ describe("ThreadRepositoryPostgres", () => {
       // Assert
       expect(thread).toEqual({
         id: "thread-123",
-        title: "HELLOWORLD!!!",
-        body: "OHHH HELLO WORLD !!!",
-        date: thread.date,
+        title: "Title New Thread",
+        body: "Thread Content Here",
         username: "dicoding",
+        date: thread.date,
       });
     });
 
@@ -157,12 +157,12 @@ describe("ThreadRepositoryPostgres", () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator,
-        fakeTimestampGenerator,
+        fakeTimestampGenerator
       );
 
       // Action & Assert
       await expect(
-        threadRepositoryPostgres.getThreadById("thread-123"),
+        threadRepositoryPostgres.getThreadById("thread-123")
       ).rejects.toThrowError("thread tidak ditemukan");
     });
   });

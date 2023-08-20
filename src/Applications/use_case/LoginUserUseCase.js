@@ -19,7 +19,9 @@ class LoginUserUseCase {
 
     const encryptedPassword =
       await this._userRepository.getPasswordByUsername(username);
+
     await this._passwordHash.comparePassword(password, encryptedPassword);
+
     const id = await this._userRepository.getIdByUsername(username);
 
     const accessToken =
@@ -27,6 +29,7 @@ class LoginUserUseCase {
         username,
         id,
       });
+
     const refreshToken =
       await this._authenticationTokenManager.createRefreshToken({
         username,
@@ -39,7 +42,7 @@ class LoginUserUseCase {
     });
 
     await this._authenticationRepository.addToken(
-      newAuthentication.refreshToken,
+      newAuthentication.refreshToken
     );
 
     return newAuthentication;
