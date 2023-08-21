@@ -21,6 +21,7 @@ class AddCommentUseCase {
       throw new Error(
         "ADD_COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPESIFICATION",
       );
+      // Note : Baris ini belum tercover oleh testing.
     }
   }
 }

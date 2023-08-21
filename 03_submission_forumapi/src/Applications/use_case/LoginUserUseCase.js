@@ -29,6 +29,7 @@ class LoginUserUseCase {
         username,
         id,
       });
+    
     const refreshToken =
       await this._authenticationTokenManager.createRefreshToken({
         username,
@@ -41,7 +42,7 @@ class LoginUserUseCase {
     });
 
     await this._authenticationRepository.addToken(
-      newAuthentication.refreshToken,
+      newAuthentication.refreshToken
     );
 
     return newAuthentication;

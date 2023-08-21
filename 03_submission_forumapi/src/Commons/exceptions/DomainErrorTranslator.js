@@ -37,18 +37,18 @@ DomainErrorTranslator._directories = {
     "tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada",
   ),
   "NEW_THREAD.NOT_MEET_DATA_TYPE_SPESIFICATION": new InvariantError(
-    "tidak dapat membuat thread baru karena tipe data tidak sesuai",
+    "Thread tidak dapat dibuat, tipe data tidak sesuai",
   ),
   "ADD_COMMENT_USE_CASE.NOT_CONTAIN_CONTENT": new InvariantError(
     "content tidak ada",
   ),
   "ADD_COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPESIFICATION":
-    new InvariantError("content harus string"),
+    new InvariantError("Tipe data content tidak sesuai, harus string"),
   "ADD_REPLY_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
     "content tidak ada",
   ),
   "ADD_REPLY_USE_CASE.NOT_MEET_DATA_TYPE_SPESIFICATION": new InvariantError(
-    "content harus string",
+    "Tipe data content tidak sesuai, harus string",
   ),
 };
 

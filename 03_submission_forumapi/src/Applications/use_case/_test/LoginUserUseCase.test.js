@@ -1,5 +1,3 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
 const UserRepository = require("../../../Domains/users/UserRepository");
 const AuthenticationRepository = require("../../../Domains/authentications/AuthenticationRepository");
 const AuthenticationTokenManager = require("../../security/AuthenticationTokenManager");
@@ -14,10 +12,12 @@ describe("GetAuthenticationUseCase", () => {
       username: "dicoding",
       password: "secret",
     };
+
     const mockedAuthentication = new NewAuth({
       accessToken: "access_token",
       refreshToken: "refresh_token",
     });
+
     const mockUserRepository = new UserRepository();
     const mockAuthenticationRepository = new AuthenticationRepository();
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
@@ -65,20 +65,24 @@ describe("GetAuthenticationUseCase", () => {
         refreshToken: "refresh_token",
       }),
     );
+
     expect(mockUserRepository.getPasswordByUsername).toBeCalledWith("dicoding");
     expect(mockPasswordHash.comparePassword).toBeCalledWith(
       "secret",
       "encrypted_password",
     );
+
     expect(mockUserRepository.getIdByUsername).toBeCalledWith("dicoding");
     expect(mockAuthenticationTokenManager.createAccessToken).toBeCalledWith({
       username: "dicoding",
       id: "user-123",
     });
+
     expect(mockAuthenticationTokenManager.createRefreshToken).toBeCalledWith({
       username: "dicoding",
       id: "user-123",
     });
+    
     expect(mockAuthenticationRepository.addToken).toBeCalledWith(
       mockedAuthentication.refreshToken,
     );

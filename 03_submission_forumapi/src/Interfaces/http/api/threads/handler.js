@@ -23,13 +23,26 @@ class ThreadsHandler {
     this.putLikesCommentHandler = this.putLikesCommentHandler.bind(this);
   }
 
+  async getThreadByIdHandler(request) {
+    const getDetailThreadUseCase = this._container.getInstance(
+      GetDetailThreadUseCase.name
+    );
+    const detailThread = await getDetailThreadUseCase.execute(request.params);
+
+    return {
+      status: "success",
+      data: { thread: detailThread },
+    };
+  }
+
   async postThreadsHandler(request, h) {
     const { id: userId } = request.auth.credentials;
 
     const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
+
     const { id, title, owner } = await addThreadUseCase.execute(
       userId,
-      request.payload,
+      request.payload
     );
 
     const response = h.response({
@@ -45,12 +58,12 @@ class ThreadsHandler {
     const { threadId } = request.params;
 
     const addCommentUseCase = this._container.getInstance(
-      AddCommentUseCase.name,
+      AddCommentUseCase.name
     );
     const { id, content, owner } = await addCommentUseCase.execute(
       userId,
       threadId,
-      request.payload.content,
+      request.payload.content
     );
 
     const response = h.response({
@@ -81,24 +94,12 @@ class ThreadsHandler {
     return response;
   }
 
-  async getThreadByIdHandler(request) {
-    const getDetailThreadUseCase = this._container.getInstance(
-      GetDetailThreadUseCase.name,
-    );
-    const detailThread = await getDetailThreadUseCase.execute(request.params);
-
-    return {
-      status: "success",
-      data: { thread: detailThread },
-    };
-  }
-
   async putLikesCommentHandler(request) {
     const { id: userId } = request.auth.credentials;
     const { threadId, commentId } = request.params;
 
     const updateLikesCommentUseCase = this._container.getInstance(
-      UpdateLikesCommentUseCase.name,
+      UpdateLikesCommentUseCase.name
     );
 
     await updateLikesCommentUseCase.execute({ threadId, commentId, userId });
@@ -113,7 +114,7 @@ class ThreadsHandler {
     const { threadId, commentId } = request.params;
 
     const deleteCommentUseCase = this._container.getInstance(
-      DeleteCommentUseCase.name,
+      DeleteCommentUseCase.name
     );
 
     await deleteCommentUseCase.execute(userId, threadId, commentId);
@@ -128,7 +129,7 @@ class ThreadsHandler {
     const { threadId, commentId, replyId } = request.params;
 
     const deleteReplyUseCase = this._container.getInstance(
-      DeleteReplyUseCase.name,
+      DeleteReplyUseCase.name
     );
 
     // eslint-disable-next-line object-curly-newline

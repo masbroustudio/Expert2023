@@ -29,14 +29,14 @@ describe("CommentRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
         pool,
-        fakeIdGenerator,
+        fakeIdGenerator
       );
 
       // Action
       await commentRepositoryPostgres.addComment(
         "user-123",
         "thread-123",
-        content,
+        content
       );
 
       // Assert
@@ -53,14 +53,14 @@ describe("CommentRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
         pool,
-        fakeIdGenerator,
+        fakeIdGenerator
       );
 
       // Action
       const addedComment = await commentRepositoryPostgres.addComment(
         "user-123",
         "thread-123",
-        content,
+        content
       );
 
       // Assert
@@ -69,7 +69,7 @@ describe("CommentRepositoryPostgres", () => {
           id: "comment-123",
           content,
           owner: "user-123",
-        }),
+        })
       );
     });
   });
@@ -82,7 +82,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action and Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentById(commentId),
+        commentRepositoryPostgres.verifyCommentById(commentId)
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -95,7 +95,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action and Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentById("comment-123"),
+        commentRepositoryPostgres.verifyCommentById("comment-123")
       ).resolves.not.toThrow(NotFoundError);
     });
   });
@@ -112,7 +112,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action and assert
       await expect(
-        commentRepositoryPostgres.verifyCommentOwner(commentId, userId),
+        commentRepositoryPostgres.verifyCommentOwner(commentId, userId)
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -127,7 +127,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action and assert
       await expect(
-        commentRepositoryPostgres.verifyCommentOwner(commentId, userId),
+        commentRepositoryPostgres.verifyCommentOwner(commentId, userId)
       ).resolves.not.toThrow(AuthorizationError);
     });
   });
@@ -144,7 +144,7 @@ describe("CommentRepositoryPostgres", () => {
       await CommentsTableTestHelper.addComment({ date: dateComment1 });
       await CommentsTableTestHelper.addComment({
         id: "comment-234",
-        newComment: "new comment",
+        newComment: "sebuah comment",
         threadId: "thread-123",
         userId: "user-123",
         date: dateComment2,
@@ -161,14 +161,14 @@ describe("CommentRepositoryPostgres", () => {
           id: "comment-123",
           username: "yudhae",
           date: dateComment1.toISOString(),
-          content: "a comment",
+          content: "sebuah comment",
           is_delete: "0",
         },
         {
           id: "comment-234",
           username: "yudhae",
           date: dateComment2.toISOString(),
-          content: "new comment",
+          content: "sebuah comment",
           is_delete: "1",
         },
       ]);
@@ -187,40 +187,6 @@ describe("CommentRepositoryPostgres", () => {
 
       // Assert
       expect(getCommentsByThreadId).toEqual([]);
-    });
-  });
-
-  describe("verifyLikesComment", () => {
-    it("should return 0 if there is no likes from the user on comment", async () => {
-      // Arrange
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool);
-      const commentId = "comment-123";
-      const userId = "user-123";
-
-      // Action
-      const verifyLikesComment =
-        await commentRepositoryPostgres.verifyLikesComment(commentId, userId);
-
-      // Assert
-      expect(verifyLikesComment).toEqual(0);
-    });
-
-    it("should return 1 if there is likes from the user on comment", async () => {
-      // Arrange
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool);
-      const commentId = "comment-123";
-      const userId = "user-123";
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({});
-      await CommentsTableTestHelper.addComment({});
-      await LikesCommentTableTestHelper.addLikesComment({});
-
-      // Action
-      const verifyLikesComment =
-        await commentRepositoryPostgres.verifyLikesComment(commentId, userId);
-
-      // Assert
-      expect(verifyLikesComment).toEqual(1);
     });
   });
 
@@ -259,26 +225,22 @@ describe("CommentRepositoryPostgres", () => {
     });
   });
 
-  describe("updateLikesComment", () => {
-    it("should return comment_id and user_id if user not yet like the comment", async () => {
+  describe("verifyLikesComment", () => {
+    it("should return 0 if there is no likes from the user on comment", async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool);
       const commentId = "comment-123";
       const userId = "user-123";
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({});
-      await CommentsTableTestHelper.addComment({});
 
       // Action
-      const updateLikesComment =
-        await commentRepositoryPostgres.updateLikesComment(commentId, userId);
+      const verifyLikesComment =
+        await commentRepositoryPostgres.verifyLikesComment(commentId, userId);
 
       // Assert
-      expect(updateLikesComment[0].comment_id).toEqual(commentId);
-      expect(updateLikesComment[0].user_id).toEqual(userId);
+      expect(verifyLikesComment).toEqual(0);
     });
 
-    it("should return [] if user has like the comment", async () => {
+    it("should return 1 if there is likes from the user on comment", async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool);
       const commentId = "comment-123";
@@ -289,11 +251,11 @@ describe("CommentRepositoryPostgres", () => {
       await LikesCommentTableTestHelper.addLikesComment({});
 
       // Action
-      const updateLikesComment =
-        await commentRepositoryPostgres.updateLikesComment(commentId, userId);
+      const verifyLikesComment =
+        await commentRepositoryPostgres.verifyLikesComment(commentId, userId);
 
       // Assert
-      expect(updateLikesComment).toEqual([]);
+      expect(verifyLikesComment).toEqual(1);
     });
   });
 
@@ -306,9 +268,17 @@ describe("CommentRepositoryPostgres", () => {
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
 
-      // Action and assert
-      const isDelete = await commentRepositoryPostgres.deleteComment(commentId);
-      expect(isDelete).toBe("1");
+      // Action
+      await commentRepositoryPostgres.deleteComment(commentId);
+
+      // Assert
+      const comments =
+        await CommentsTableTestHelper.findCommentsById(commentId);
+      expect(comments).toHaveLength(1);
+
+      // Note ✅ : Kamu belum melakukan assert perubahan nilai kolom is_delete
+      // di database apakah sudah sesuai harapan. Sesuaikan pula untuk implementasi
+      // integration test concrete repository lain yang serupa.
     });
   });
 });

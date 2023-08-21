@@ -15,6 +15,7 @@ class NewThread {
 
     if (typeof title !== "string" || typeof body !== "string") {
       throw new Error("NEW_THREAD.NOT_MEET_DATA_TYPE_SPESIFICATION");
+      // Note : Baris ini belum tercover oleh testing.
     }
   }
 }

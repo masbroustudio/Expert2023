@@ -10,11 +10,13 @@ describe("AddThreadUseCase", () => {
       title: "Title New Thread",
       body: "Thread Content Here",
     };
+
     const mockAddedThread = new AddedThread({
       id: "thread-123",
       title: useCasePayload.title,
       owner: "user-123",
     });
+
     const mockThreadRepository = new ThreadRepository();
 
     // Mocking
@@ -22,7 +24,6 @@ describe("AddThreadUseCase", () => {
       .fn()
       .mockImplementation(() => Promise.resolve(mockAddedThread));
 
-    /** creating use case instance */
     const addThreadUseCase = new AddThreadUseCase({
       threadRepository: mockThreadRepository,
     });
@@ -30,7 +31,7 @@ describe("AddThreadUseCase", () => {
     // Action
     const addedThread = await addThreadUseCase.execute(
       "user-123",
-      useCasePayload,
+      useCasePayload
     );
 
     // Assert
@@ -39,14 +40,14 @@ describe("AddThreadUseCase", () => {
         id: "thread-123",
         title: useCasePayload.title,
         owner: "user-123",
-      }),
+      })
     );
     expect(mockThreadRepository.addThread).toBeCalledWith(
       "user-123",
       new NewThread({
         title: useCasePayload.title,
         body: useCasePayload.body,
-      }),
+      })
     );
   });
 });

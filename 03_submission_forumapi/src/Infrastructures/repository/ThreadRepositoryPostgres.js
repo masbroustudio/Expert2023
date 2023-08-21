@@ -32,7 +32,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("thread tidak ditemukan");
+      throw new NotFoundError("thread tidak ditemukan atau tidak valid");
     }
   }
 
@@ -45,10 +45,15 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("thread tidak ditemukan");
+      throw new NotFoundError("thread tidak ditemukan atau tidak valid");
     }
 
     return { ...result.rows[0], date: result.rows[0].date.toISOString() };
+    // Note : Logika bisnis pengolahan nilai kolom date seharusnya bukan tanggung jawab infrastruktur seperti database.  
+    // Jadi, seharusnya pindahkan logika ini ke domain entities atau use case. Sesuaikan pula untuk implementasi concrete repository lain yang serupa.
+    // Setelah dipindahkan, jangan lupa buat unit testingnya juga ya.
+    // Silakan lihat point 3 pada modul berikut untuk lebih jelasnya https://www.dicoding.com/academies/276/tutorials/22287
+
   }
 }
 

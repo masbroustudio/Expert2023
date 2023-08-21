@@ -22,7 +22,9 @@ describe("/authentications endpoint", () => {
         username: "dicoding",
         password: "secret",
       };
+
       const server = await createServer(container);
+
       // add user
       await server.inject({
         method: "POST",
@@ -43,6 +45,7 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual("success");
       expect(responseJson.data.accessToken).toBeDefined();
@@ -55,6 +58,7 @@ describe("/authentications endpoint", () => {
         username: "dicoding",
         password: "secret",
       };
+
       const server = await createServer(container);
 
       // Action
@@ -66,6 +70,7 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("username tidak ditemukan");
@@ -77,7 +82,9 @@ describe("/authentications endpoint", () => {
         username: "dicoding",
         password: "wrong_password",
       };
+
       const server = await createServer(container);
+
       // Add user
       await server.inject({
         method: "POST",
@@ -98,6 +105,7 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(401);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
@@ -110,6 +118,7 @@ describe("/authentications endpoint", () => {
       const requestPayload = {
         username: "dicoding",
       };
+
       const server = await createServer(container);
 
       // Action
@@ -121,6 +130,7 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
@@ -134,6 +144,7 @@ describe("/authentications endpoint", () => {
         username: 123,
         password: "secret",
       };
+
       const server = await createServer(container);
 
       // Action
@@ -145,6 +156,7 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
@@ -157,6 +169,7 @@ describe("/authentications endpoint", () => {
     it("should return 200 and new access token", async () => {
       // Arrange
       const server = await createServer(container);
+
       // add user
       await server.inject({
         method: "POST",
@@ -167,6 +180,7 @@ describe("/authentications endpoint", () => {
           fullname: "Dicoding Indonesia",
         },
       });
+
       // login user
       const loginResponse = await server.inject({
         method: "POST",
@@ -176,6 +190,8 @@ describe("/authentications endpoint", () => {
           password: "secret",
         },
       });
+
+      // refresh token
       const {
         data: { refreshToken },
       } = JSON.parse(loginResponse.payload);
@@ -190,6 +206,7 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
       expect(responseJson.data.accessToken).toBeDefined();
@@ -207,6 +224,7 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("harus mengirimkan token refresh");
@@ -334,6 +352,7 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
+      
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("harus mengirimkan token refresh");
@@ -353,6 +372,7 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual("refresh token harus string");

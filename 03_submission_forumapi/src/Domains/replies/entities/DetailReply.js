@@ -7,6 +7,8 @@ class DetailReply {
 
     this.id = id;
     this.content = Number(is_delete) ? "**balasan telah dihapus**" : content;
+    // Note ✅: Baris ini belum tercover oleh testing.
+    
     this.date = date;
     this.username = username;
   }

@@ -18,10 +18,6 @@ class AddReplyUseCase {
   }
 
   _verifyPayload(content) {
-    if (!content) {
-      throw new Error("ADD_REPLY_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY");
-    }
-
     if (typeof content !== "string") {
       throw new Error("ADD_REPLY_USE_CASE.NOT_MEET_DATA_TYPE_SPESIFICATION");
     }

@@ -20,6 +20,7 @@ describe("LogoutUserUseCase", () => {
     const useCasePayload = {
       refreshToken: 123,
     };
+
     const logoutUserUseCase = new LogoutUserUseCase({});
 
     // Action & Assert
@@ -35,7 +36,9 @@ describe("LogoutUserUseCase", () => {
     const useCasePayload = {
       refreshToken: "refreshToken",
     };
+
     const mockAuthenticationRepository = new AuthenticationRepository();
+    
     mockAuthenticationRepository.checkAvailabilityToken = jest
       .fn()
       .mockImplementation(() => Promise.resolve());

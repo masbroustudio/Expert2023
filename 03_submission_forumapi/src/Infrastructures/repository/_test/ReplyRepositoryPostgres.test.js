@@ -1,13 +1,13 @@
 const ReplyRepositoryPostgres = require("../ReplyRepositoryPostgres");
-const ReplyTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
-const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
-const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
-const pool = require("../../database/postgres/pool");
-const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
 const AddedReply = require("../../../Domains/replies/entities/AddedReply");
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
 const AuthorizationError = require("../../../Commons/exceptions/AuthorizationError");
+const pool = require("../../database/postgres/pool");
+const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
+const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
+const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
 const RepliesTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
+const ReplyTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
 
 describe("ReplyRepositoryPostgres", () => {
   afterEach(async () => {
@@ -27,11 +27,12 @@ describe("ReplyRepositoryPostgres", () => {
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
-      const content = "a new reply";
+
+      const content = "sebuah balasan";
       const fakeIdGenerator = () => "123";
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
-        fakeIdGenerator,
+        fakeIdGenerator
       );
 
       // action
@@ -51,11 +52,12 @@ describe("ReplyRepositoryPostgres", () => {
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
-      const content = "a new reply";
+
+      const content = "sebuah balasan";
       const fakeIdGenerator = () => "123";
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
-        fakeIdGenerator,
+        fakeIdGenerator
       );
 
       // action
@@ -69,9 +71,9 @@ describe("ReplyRepositoryPostgres", () => {
       expect(addedReply).toStrictEqual(
         new AddedReply({
           id: "reply-123",
-          content: "a new reply",
+          content: "sebuah balasan",
           owner: "user-123",
-        }),
+        })
       );
     });
   });
@@ -84,7 +86,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action and Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyById(replyId),
+        replyRepositoryPostgres.verifyReplyById(replyId)
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -94,11 +96,12 @@ describe("ReplyRepositoryPostgres", () => {
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
       await ReplyTableTestHelper.addReply({});
+
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool);
 
       // Action and Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyById("reply-123"),
+        replyRepositoryPostgres.verifyReplyById("reply-123")
       ).resolves.not.toThrow(NotFoundError);
     });
   });
@@ -109,6 +112,7 @@ describe("ReplyRepositoryPostgres", () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool);
       const replyId = "reply-123";
       const userId = "not_the_owner";
+
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
@@ -116,7 +120,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action and assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner(replyId, userId),
+        replyRepositoryPostgres.verifyReplyOwner(replyId, userId)
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -125,6 +129,7 @@ describe("ReplyRepositoryPostgres", () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool);
       const replyId = "reply-123";
       const userId = "user-123";
+
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
@@ -132,7 +137,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action and assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner(replyId, userId),
+        replyRepositoryPostgres.verifyReplyOwner(replyId, userId)
       ).resolves.not.toThrow(AuthorizationError);
     });
   });
@@ -142,18 +147,19 @@ describe("ReplyRepositoryPostgres", () => {
       // Arrange
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool);
       const commentId = "comment-123";
-      const dateReply1 = new Date();
-      const dateReply2 = new Date(dateReply1.getTime() + 1000);
+      const dateReplyNow = new Date();
+      const dateReplyDelay = new Date(dateReplyNow.getTime() + 1000);
+
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
-      await RepliesTableTestHelper.addReply({ date: dateReply1 });
+      await RepliesTableTestHelper.addReply({ date: dateReplyNow });
       await RepliesTableTestHelper.addReply({
         id: "reply-234",
         content: "new reply",
         commentId: "comment-123",
         owner: "user-123",
-        date: dateReply2,
+        date: dateReplyDelay,
       });
       await RepliesTableTestHelper.deleteReply("reply-234");
 
@@ -166,14 +172,14 @@ describe("ReplyRepositoryPostgres", () => {
         {
           id: "reply-123",
           content: "content reply",
-          date: dateReply1.toISOString(),
+          date: dateReplyNow.toISOString(),
           username: "yudhae",
           is_delete: "0",
         },
         {
           id: "reply-234",
           content: "new reply",
-          date: dateReply2.toISOString(),
+          date: dateReplyDelay.toISOString(),
           username: "yudhae",
           is_delete: "1",
         },
@@ -184,6 +190,7 @@ describe("ReplyRepositoryPostgres", () => {
       // Arrange
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool);
       const commentId = "comment-123";
+
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});

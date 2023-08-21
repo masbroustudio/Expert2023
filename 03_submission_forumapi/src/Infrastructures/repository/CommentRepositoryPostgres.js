@@ -34,7 +34,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("comment tidak ditemukan");
+      throw new NotFoundError("comment tidak valid atau tidak ditemukan");
     }
   }
 
@@ -46,7 +46,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
     if (result.rows[0].owner !== userId) {
-      throw new AuthorizationError("anda bukan pemilik comment ini");
+      throw new AuthorizationError("Tidak dapat akses, anda bukan pemilik comment");
     }
   }
 
@@ -92,6 +92,7 @@ class CommentRepositoryPostgres extends CommentRepository {
   }
 
   async updateLikesComment(commentId, userId) {
+    // Note : Baris 95-112 belum tercover oleh testing.
     const checkLikes = await this.verifyLikesComment(commentId, userId);
 
     let text;

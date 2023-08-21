@@ -11,7 +11,7 @@ describe("a DetailComment entities", () => {
 
     // Action and Assert
     expect(() => new DetailComment(payload)).toThrowError(
-      "DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY",
+      "DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
 
@@ -21,13 +21,13 @@ describe("a DetailComment entities", () => {
       id: "comment-123",
       username: 123,
       date: "2021-08-08T07:19:09.775Z",
-      content: "a comment",
+      content: "sebuah comment",
       is_delete: "0",
     };
 
     // Action and Assert
     expect(() => new DetailComment(payload)).toThrowError(
-      "DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPESIFICATION",
+      "DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPESIFICATION"
     );
   });
 
@@ -35,14 +35,13 @@ describe("a DetailComment entities", () => {
     // Arrange
     const payload = {
       id: "comment-123",
-      username: "dicoding",
-      date: "2021-08-08T07:19:09.775Z",
-      content: "a comment",
+      content: "ini adalah comment-123 johndoe",
+      username: "johndoe",
+      date: "2021-08-08T07:22:33.555Z",
       is_delete: "0",
     };
 
     // Action
-    // eslint-disable-next-line object-curly-newline
     const { id, username, date, content } = new DetailComment(payload);
 
     // Assert
@@ -55,15 +54,14 @@ describe("a DetailComment entities", () => {
   it("should create detailComment object correctly", () => {
     // Arrange
     const payload = {
-      id: "comment-123",
+      id: "comment-234",
+      content: "ini adalah comment-234 dicoding",
       username: "dicoding",
-      date: "2021-08-08T07:19:09.775Z",
-      content: "a comment",
+      date: "2021-08-08T07:26:21.338Z",
       is_delete: "1",
     };
 
     // Action
-    // eslint-disable-next-line object-curly-newline
     const { id, username, date, content } = new DetailComment(payload);
 
     // Assert

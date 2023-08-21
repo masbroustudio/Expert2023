@@ -1,5 +1,3 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
 const CommentRepository = require("../../../Domains/comments/CommentRepository");
 const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
 const GetDetailThreadUseCase = require("../GetDetailThreadUseCase");
@@ -9,10 +7,15 @@ const ReplyRepository = require("../../../Domains/replies/ReplyRepository");
 describe("GetDetailThreadUseCase", () => {
   it("should orchestrating the get detail thread action correctly", async () => {
     // Arrange
-    const useCasePayload = { threadId: "thread-123" };
+    const useCasePayload = { 
+      threadId: "thread-123" 
+    };
+
+
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+
     const mockedThread = new DetailThread({
       id: "thread-123",
       title: "sebuah thread",
@@ -22,29 +25,17 @@ describe("GetDetailThreadUseCase", () => {
       comments: [
         {
           id: "comment-123",
+          content: "ini adalah comment-123 johndoe",
           username: "johndoe",
           date: "2021-08-08T07:22:33.555Z",
-          content: "sebuah comment",
           replies: [
             {
-              id: "reply-123",
-              content: "**balasan telah dihapus**",
-              date: "2021-08-08T07:59:48.766Z",
-              username: "johndoe",
-            },
-            {
               id: "reply-234",
-              content: "sebuah balasan",
-              date: "2021-08-08T08:07:01.522Z",
+              content: "ini adalah reply-234 dicoding",
               username: "dicoding",
+              date: "2021-08-08T08:07:01.522Z",
             },
           ],
-        },
-        {
-          id: "comment-234",
-          username: "dicoding",
-          date: "2021-08-08T07:26:21.338Z",
-          content: "**komentar telah dihapus**",
         },
       ],
     });
@@ -52,25 +43,26 @@ describe("GetDetailThreadUseCase", () => {
 
     // Mocking
     mockThreadRepository.verifyThreadById = jest.fn(() => Promise.resolve());
+    
     mockCommentRepository.getCommentsByThreadId = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve([
           {
             id: "comment-123",
+            content: "ini adalah comment-123 johndoe",
             username: "johndoe",
             date: "2021-08-08T07:22:33.555Z",
-            content: "sebuah comment",
             is_delete: "0",
           },
           {
             id: "comment-234",
+            content: "ini adalah comment-234 dicoding",
             username: "dicoding",
             date: "2021-08-08T07:26:21.338Z",
-            content: "new comment",
             is_delete: "1",
           },
-        ]),
+        ])
       );
     mockReplyRepository.getRepliesByCommentId = jest
       .fn()
@@ -78,17 +70,10 @@ describe("GetDetailThreadUseCase", () => {
         if (commentId === "comment-123") {
           return [
             {
-              id: "reply-123",
-              content: "balasan johndoe",
-              date: "2021-08-08T07:59:48.766Z",
-              username: "johndoe",
-              is_delete: "1",
-            },
-            {
               id: "reply-234",
-              content: "sebuah balasan",
-              date: "2021-08-08T08:07:01.522Z",
+              content: "balasan reply-234 dicoding",
               username: "dicoding",
+              date: "2021-08-08T08:07:01.522Z",
               is_delete: "0",
             },
           ];
@@ -129,46 +114,42 @@ describe("GetDetailThreadUseCase", () => {
         comments: [
           {
             id: "comment-123",
+            content: "ini adalah comment-123 johndoe",
             username: "johndoe",
             date: "2021-08-08T07:22:33.555Z",
-            content: "sebuah comment",
             replies: [
               {
-                id: "reply-123",
-                content: "**balasan telah dihapus**",
-                date: "2021-08-08T07:59:48.766Z",
-                username: "johndoe",
-              },
-              {
                 id: "reply-234",
-                content: "sebuah balasan",
-                date: "2021-08-08T08:07:01.522Z",
+                content: "balasan reply-234 dicoding",
                 username: "dicoding",
+                date: "2021-08-08T08:07:01.522Z",
               },
             ],
             likeCount: 1,
           },
           {
             id: "comment-234",
+            content: "**komentar telah dihapus**",
             username: "dicoding",
             date: "2021-08-08T07:26:21.338Z",
-            content: "**komentar telah dihapus**",
             replies: [],
             likeCount: 0,
           },
         ],
-      }),
+      })
     );
     expect(mockThreadRepository.verifyThreadById).toBeCalledWith("thread-123");
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(
-      "thread-123",
+      "thread-123"
     );
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(
-      "comment-123",
+      "comment-123"
     );
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(
-      "comment-234",
+      "comment-234"
     );
     expect(mockThreadRepository.getThreadById).toBeCalledWith("thread-123");
+    // Note : Verifikasi semua pemanggilan fungsi mock. 
+    // Sesuaikan pula untuk implementasi unit test usecase yang lain.
   });
 });

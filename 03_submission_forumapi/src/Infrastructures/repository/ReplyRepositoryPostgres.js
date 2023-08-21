@@ -34,7 +34,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("reply tidak ditemukan");
+      throw new NotFoundError("reply tidak ditemukan atau tidak valid");
     }
   }
 
@@ -47,7 +47,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new AuthorizationError("anda bukan pemilik reply ini");
+      throw new AuthorizationError("Tidak dapat diakses, hanya user reply");
     }
   }
 

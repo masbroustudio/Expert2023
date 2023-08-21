@@ -13,8 +13,11 @@ describe("DeleteCommentUseCase", () => {
     mockCommentRepository.verifyCommentById = jest.fn(() => Promise.resolve());
     mockCommentRepository.verifyCommentOwner = jest.fn(() => Promise.resolve());
     mockCommentRepository.deleteComment = jest.fn(() => Promise.resolve());
+    // Kamu mendefinisikan fungsi concrete deleteComment mengembalikan nilai, 
+    // namun disini kamu tidak mengembalikan nilai apapun. 
+    // Sesuaikan pula untuk implementasi fungsi mock yang lain.
 
-    // create use case instance
+    // Create Instance
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
       threadRepository: mockThreadRepository,
@@ -26,11 +29,11 @@ describe("DeleteCommentUseCase", () => {
     // Assert
     expect(mockThreadRepository.verifyThreadById).toBeCalledWith("thread-123");
     expect(mockCommentRepository.verifyCommentById).toBeCalledWith(
-      "comment-123",
+      "comment-123"
     );
     expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(
       "comment-123",
-      "user-123",
+      "user-123"
     );
     expect(mockCommentRepository.deleteComment).toBeCalledWith("comment-123");
   });

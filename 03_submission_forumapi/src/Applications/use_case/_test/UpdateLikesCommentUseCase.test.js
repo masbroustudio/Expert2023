@@ -30,9 +30,11 @@ describe("LikesCommentUseCase", () => {
 
     // Assert
     expect(mockThreadRepository.verifyThreadById).toBeCalledWith("thread-123");
+
     expect(mockCommentRepository.verifyCommentById).toBeCalledWith(
       "comment-123",
     );
+    
     expect(mockCommentRepository.updateLikesComment).toBeCalledWith(
       "comment-123",
       "user-123",

@@ -6,11 +6,12 @@ class DeleteReplyUseCase {
   }
 
   async execute(useCasePayload) {
-    // eslint-disable-next-line object-curly-newline
     const { userId, threadId, commentId, replyId } = useCasePayload;
 
     await this._threadRepository.verifyThreadById(threadId);
+
     await this._commentRepository.verifyCommentById(commentId);
+    
     await this._replyRepository.verifyReplyById(replyId);
 
     await this._replyRepository.verifyReplyOwner(replyId, userId);
