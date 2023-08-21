@@ -8,9 +8,9 @@ describe("a AddedReply entities", () => {
       content: "Added reply-123",
     };
 
-    // Action & Assert
+    // Action and Assert
     expect(() => new AddedReply(payload)).toThrowError(
-      "ADDED_REPLY.NOT_CONTAIN_NEEDED_PROPERTY",
+      "ADDED_REPLY.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
 
@@ -22,9 +22,9 @@ describe("a AddedReply entities", () => {
       owner: 123,
     };
 
-    // Action & Assert
+    // Action and Assert
     expect(() => new AddedReply(payload)).toThrowError(
-      "ADDED_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION",
+      "ADDED_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
@@ -41,8 +41,11 @@ describe("a AddedReply entities", () => {
 
     // Assert
     expect(addedReply).toBeInstanceOf(AddedReply);
+
     expect(addedReply.id).toEqual(payload.id);
+
     expect(addedReply.content).toEqual(payload.content);
+
     expect(addedReply.owner).toEqual(payload.owner);
   });
 });

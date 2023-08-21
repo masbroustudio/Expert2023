@@ -175,6 +175,30 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       expect(responseJson.message).toEqual("Missing authentication");
     });
 
+    it("should response 404 when thread not found", async () => {
+      // Arrange
+      const requestPayload = {
+        content: "sebuah Reply",
+      };
+
+      // Action
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: "POST",
+        url: `/threads/thread-123456/comments/${commentId}/replies`,
+        payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual("fail");
+      expect(responseJson.message).toEqual("thread tidak ditemukan");
+    });
+
     it("should response 404 when comment not found", async () => {
       // Arrange
       const requestPayload = {
@@ -199,30 +223,6 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       expect(responseJson.message).toEqual(
         "comment tidak valid atau tidak ditemukan"
       );
-    });
-
-    it("should response 404 when thread not found", async () => {
-      // Arrange
-      const requestPayload = {
-        content: "sebuah Reply",
-      };
-
-      // Action
-      const server = await createServer(container);
-      const response = await server.inject({
-        method: "POST",
-        url: `/threads/thread-123456/comments/${commentId}/replies`,
-        payload: requestPayload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("thread tidak ditemukan");
     });
   });
 
@@ -257,22 +257,6 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       expect(responseJson.message).toEqual("Missing authentication");
     });
 
-    it("should response 404 when reply not found", async () => {
-      // Action
-      const server = await createServer(container);
-      const response = await server.inject({
-        method: "DELETE",
-        url: `/threads/${threadId}/comments/${commentId}/replies/reply-123456`,
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("reply tidak ditemukan");
-    });
-
     it("should response 403 when reply not owned by credential owner", async () => {
       // Action
       const server = await createServer(container);
@@ -289,6 +273,22 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       expect(responseJson.message).toEqual(
         "Tidak dapat akses, anda bukan pemilik reply"
       );
+    });
+
+    it("should response 404 when reply not found", async () => {
+      // Action
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: "DELETE",
+        url: `/threads/${threadId}/comments/${commentId}/replies/reply-123456`,
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual("fail");
+      expect(responseJson.message).toEqual("reply tidak ditemukan");
     });
   });
 });

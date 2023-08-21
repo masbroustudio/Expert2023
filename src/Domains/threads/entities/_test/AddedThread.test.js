@@ -8,7 +8,7 @@ describe("a AddedThread entities", () => {
       title: "sebuah thread",
     };
 
-    // Action & Assert
+    // Action and Assert
     expect(() => new AddedThread(payload)).toThrowError(
       "ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY",
     );
@@ -22,7 +22,7 @@ describe("a AddedThread entities", () => {
       owner: 123,
     };
 
-    // Action & Assert
+    // Action and Assert
     expect(() => new AddedThread(payload)).toThrowError(
       "ADDED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION",
     );

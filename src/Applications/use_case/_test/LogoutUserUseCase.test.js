@@ -58,6 +58,7 @@ describe("LogoutUserUseCase", () => {
     expect(
       mockAuthenticationRepository.checkAvailabilityToken
     ).toHaveBeenCalledWith(useCasePayload.refreshToken);
+    
     expect(mockAuthenticationRepository.deleteToken).toHaveBeenCalledWith(
       useCasePayload.refreshToken
     );

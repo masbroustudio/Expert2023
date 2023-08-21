@@ -160,6 +160,31 @@ describe("/threads endpoint", () => {
   });
 
   describe("when POST /threads", () => {
+    it("should response 201 and persisted thread", async () => {
+      // Arrange
+      const requestPayload = {
+        title: "sebuah thread",
+        body: "sebuah body thread",
+      };
+
+      // Action
+      const server = await createServer(container);
+      const response = await server.inject({
+        method: "POST",
+        url: "/threads",
+        payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(201);
+      expect(responseJson.status).toEqual("success");
+      expect(responseJson.data.addedThread).toBeDefined();
+    });
+
     it("should response 401 when not including access token", async () => {
       // Action
       const server = await createServer(container);
@@ -221,31 +246,6 @@ describe("/threads endpoint", () => {
       expect(responseJson.message).toEqual(
         "tidak dapat membuat thread baru karena tipe data tidak sesuai"
       );
-    });
-
-    it("should response 201 and persisted thread", async () => {
-      // Arrange
-      const requestPayload = {
-        title: "sebuah thread",
-        body: "sebuah body thread",
-      };
-
-      // Action
-      const server = await createServer(container);
-      const response = await server.inject({
-        method: "POST",
-        url: "/threads",
-        payload: requestPayload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.status).toEqual("success");
-      expect(responseJson.data.addedThread).toBeDefined();
     });
   });
 });

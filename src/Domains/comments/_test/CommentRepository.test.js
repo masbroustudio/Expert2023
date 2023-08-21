@@ -5,7 +5,7 @@ describe("CommentRepository interface", () => {
     // Arrange
     const commentRepository = new CommentRepository();
 
-    // Action & Assert
+    // Action and Assert
     await expect(commentRepository.addComment({})).rejects.toThrowError(
       "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );

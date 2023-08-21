@@ -12,7 +12,8 @@ class LogoutUserUseCase {
     await this._authenticationRepository.deleteToken(refreshToken);
   }
 
-  _validatePayload({ refreshToken }) {
+  _validatePayload(payload) {
+    const { refreshToken } = payload;
     if (!refreshToken) {
       throw new Error(
         "DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN"

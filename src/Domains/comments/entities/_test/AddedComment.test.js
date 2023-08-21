@@ -8,7 +8,7 @@ describe("a AddedComment entities", () => {
       content: "sebuah content",
     };
 
-    // Action & Assert
+    // Action and Assert
     expect(() => new AddedComment(payload)).toThrowError(
       "ADDED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY"
     );
@@ -41,8 +41,11 @@ describe("a AddedComment entities", () => {
 
     // Assert
     expect(addedComment).toBeInstanceOf(AddedComment);
+
     expect(addedComment.id).toEqual(payload.id);
+
     expect(addedComment.content).toEqual(payload.content);
+
     expect(addedComment.owner).toEqual(payload.owner);
   });
 });

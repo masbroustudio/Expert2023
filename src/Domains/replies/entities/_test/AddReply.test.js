@@ -10,7 +10,7 @@ describe("a AddReply entities", () => {
 
     // Action and Assert
     expect(() => new AddReply(payload)).toThrowError(
-      "ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY",
+      "ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
 
@@ -24,7 +24,7 @@ describe("a AddReply entities", () => {
 
     // Action and Assert
     expect(() => new AddReply(payload)).toThrowError(
-      "ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION",
+      "ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
@@ -38,7 +38,7 @@ describe("a AddReply entities", () => {
 
     // Action and Assert
     expect(() => new AddReply(payload)).toThrowError(
-      "ADD_REPLY.NOT_MEET_AUTHENTICATION_DATA",
+      "ADD_REPLY.NOT_MEET_AUTHENTICATION_DATA"
     );
   });
 
@@ -47,7 +47,7 @@ describe("a AddReply entities", () => {
     const payload = {
       commentId: "thread-123",
       content: "sebuah content",
-      owner: "user-mars123",
+      owner: "yudhae",
     };
 
     // Action
@@ -55,8 +55,11 @@ describe("a AddReply entities", () => {
 
     // Assert
     expect(addReply).toBeInstanceOf(AddReply);
+
     expect(addReply.commentId).toEqual(payload.commentId);
+
     expect(addReply.content).toEqual(payload.content);
+
     expect(addReply.owner).toEqual(payload.owner);
   });
 });

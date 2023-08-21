@@ -106,7 +106,7 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
     commentId = createCommentResponseJson.data.addedComment.id;
 
     const anotherCreateCommentResponseJson = JSON.parse(
-      anotherCreateCommentResponse.payload,
+      anotherCreateCommentResponse.payload
     );
     anotherCommentId = anotherCreateCommentResponseJson.data.addedComment.id;
   });
@@ -124,66 +124,6 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
   });
 
   describe("when PUT /threads/{threadId}/comments/{commentId}/likes", () => {
-    it("should response 401 when no credentials were included within headers", async () => {
-      // Arrange
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: "PUT",
-        url: `/threads/${threadId}/comments/${commentId}/likes`,
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("Missing authentication");
-    });
-
-    it("should response 404 when threadId not valid", async () => {
-      // Arrange
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: "PUT",
-        url: `/threads/invalid-thread/comments/${commentId}/likes`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("thread tidak ditemukan");
-    });
-
-    it("should response 404 when commentId not valid", async () => {
-      // Arrange
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: "PUT",
-        url: `/threads/${threadId}/comments/invalid-comment/likes`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("comment tidak valid atau tidak ditemukan");
-    });
-
     it("should respone 200 when another user like comment", async () => {
       // Arrange
       const server = await createServer(container);
@@ -325,6 +265,68 @@ describe("/threads/{threadId}/comments/{commentId}/likes endpoint", () => {
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
       expect(responseJson.data.thread.comments[0].likeCount).toEqual(0);
+    });
+
+    it("should response 401 when no credentials were included within headers", async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: "PUT",
+        url: `/threads/${threadId}/comments/${commentId}/likes`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+
+      expect(response.statusCode).toEqual(401);
+      expect(responseJson.status).toEqual("fail");
+      expect(responseJson.message).toEqual("Missing authentication");
+    });
+
+    it("should response 404 when threadId not valid", async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: "PUT",
+        url: `/threads/invalid-thread/comments/${commentId}/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual("fail");
+      expect(responseJson.message).toEqual("thread tidak ditemukan");
+    });
+
+    it("should response 404 when commentId not valid", async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: "PUT",
+        url: `/threads/${threadId}/comments/invalid-comment/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual("fail");
+      expect(responseJson.message).toEqual(
+        "comment tidak valid atau tidak ditemukan"
+      );
     });
   });
 });

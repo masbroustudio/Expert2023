@@ -158,10 +158,13 @@ describe("LikeCommentUseCase", () => {
     expect(mockThreadRepository.verifyAvailableThread).toHaveBeenCalledWith(
       useCasePayload.threadId
     );
+
     expect(mockCommentRepository.verifyAvailableComment).toHaveBeenCalledWith(
       useCasePayload.commentId
     );
+
     expect(mockLikeRepository.checkLike).toHaveBeenCalledWith(useCasePayload);
+
     expect(mockLikeRepository.deleteLike).toHaveBeenCalledWith(useCasePayload);
   });
 });

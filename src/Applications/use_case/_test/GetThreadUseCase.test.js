@@ -33,7 +33,7 @@ describe("GetThreadUseCase", () => {
         Promise.resolve([
           {
             id: "comment-123",
-            content: "Comment from earth",
+            content: "sebuah comment",
             date: "2021-08-08T07:22:33.555Z",
             owner: "user-123",
             thread_id: "thread-123",
@@ -89,7 +89,7 @@ describe("GetThreadUseCase", () => {
           id: "comment-123",
           username: "dicoding",
           date: "2021-08-08T07:22:33.555Z",
-          content: "Comment from earth",
+          content: "sebuah comment",
           likeCount: 1,
           replies: [
             {
@@ -132,7 +132,7 @@ describe("GetThreadUseCase", () => {
         Promise.resolve([
           {
             id: "comment-123",
-            content: "Comment from earth",
+            content: "sebuah comment",
             date: "2021-08-08T07:22:33.555Z",
             owner: "user-123",
             thread_id: "thread-123",

@@ -32,7 +32,7 @@ describe("a AddComment entities", () => {
     // Arrange
     const payload = {
       threadId: "thread-123",
-      content: "hello mars",
+      content: "sebuah content",
       owner: undefined,
     };
 
@@ -47,7 +47,7 @@ describe("a AddComment entities", () => {
     const payload = {
       threadId: "thread-123",
       content: "sebuah comment",
-      owner: "user-mars123",
+      owner: "yudhae",
     };
 
     // Action

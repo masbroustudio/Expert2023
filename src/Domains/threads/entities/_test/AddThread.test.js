@@ -47,7 +47,7 @@ describe("a AddThread entities", () => {
     const payload = {
       title: "Title New Thread",
       body: "New Thread",
-      owner: "user-doe1234",
+      owner: "user-123",
     };
 
     // Action
