@@ -2,7 +2,7 @@ const ThreadsRepository = require('../../../../../Domains/threads/ThreadsReposit
 const ThreadCommentsRepository = require('../../../../../Domains/threads/comments/ThreadCommentsRepository')
 const ThreadCommentRepliesRepository = require('../../../../../Domains/threads/replies/ThreadCommentRepliesRepository')
 
-const SoftDeleteReplyUsecase = require('../SoftDeleteReplyUsecase')
+const SoftDeleteReplyUsecase = require('src/Applications/use_cases/threads/replies/_test/SoftDeleteReplyUsecase.test.js')
 
 describe('SoftDeleteReplyUsecase', () => {
   it('should orchestracting the delete reply action correctly', async () => {

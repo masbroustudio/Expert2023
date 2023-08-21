@@ -15,12 +15,14 @@ const createServer = async (container) => {
     port: Configs.server.port
   })
 
-  const docsUrl = 'https://docs.page/KeidsID/dicoding-forum-api'
+  // const docsUrl = 'https://docs.page/KeidsID/dicoding-forum-api'
 
   server.route([{
     method: 'GET',
     path: '/',
-    handler: (req, h) => h.response().redirect(docsUrl).permanent(true)
+    handler: () => ({
+      value: 'Forum API'
+    })
   }])
 
   // external plugins
